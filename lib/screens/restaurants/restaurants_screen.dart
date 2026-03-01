@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:voyra_app/models/meal.dart';
 import 'package:voyra_app/models/restaurant.dart';
+import 'package:voyra_app/models/review.dart';
+import 'package:voyra_app/models/subscription.dart';
 import 'package:voyra_app/widgets/custom_dropdown_field.dart';
 import '../../core/app_theme.dart';
 import '../../widgets/custom_text_field.dart';
@@ -103,45 +106,164 @@ class RestaurantCard extends StatelessWidget {
     final restaurants = [
       Restaurant(
         name: 'مطعم الدجاج',
-        image: 'assets/images/user.jpg',
+        image: 'assets/images/auth_background.png',
         rating: 4.9,
         reviews: 100,
         dishes: 'عجائب الدجاج المشوية - 100 طبق',
+        ordersCount: 540,
+        preparingTime: 25,
+
+        meals: [
+          Meal(
+            name: 'برياني دجاج',
+            price: 20,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'شاورما',
+            price: 15,
+            image: 'assets/images/auth_background.png',
+          ),
+        ],
+
+        subscriptions: [
+          Subscription(
+            title: 'وجبات عادية',
+            duration: '3 أشهر',
+            price: 200,
+            mealsCount: 8,
+          ),
+          Subscription(
+            title: 'وجبات برو',
+            duration: '6 أشهر',
+            price: 350,
+            mealsCount: 16,
+          ),
+        ],
+
+        reviewsList: [
+          Review(
+            userName: 'محمد احمد',
+            rating: 4.8,
+            comment: 'رائع جدا والطعم ممتاز',
+            userImage: 'assets/images/user.jpg',
+            date: '2026-03-01',
+          ),
+          Review(
+            userName: 'سارة خالد',
+            rating: 5.0,
+            comment: 'أفضل مطعم جربته',
+            userImage: 'assets/images/user.jpg',
+            date: '2026-03-01',
+          ),
+        ],
       ),
+
       Restaurant(
         name: 'مطعم كنتاكي',
-        image: 'assets/images/user.jpg',
-        rating: 4.9,
-        reviews: 100,
+        image: 'assets/images/auth_background.png',
+        rating: 4.7,
+        reviews: 80,
         dishes: 'عجائب الدجاج - 100 طبق',
+        ordersCount: 430,
+        preparingTime: 20,
+
+        meals: [
+          Meal(
+            name: 'زنجر',
+            price: 18,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'كرسبي',
+            price: 22,
+            image: 'assets/images/auth_background.png',
+          ),
+        ],
+
+        subscriptions: [
+          Subscription(
+            title: 'باقة أسبوعية',
+            duration: '1 شهر',
+            price: 120,
+            mealsCount: 5,
+          ),
+        ],
+
+        reviewsList: [
+          Review(
+            userName: 'أحمد علي',
+            rating: 4.5,
+            comment: 'طعم لذيذ لكن التوصيل بطيء قليلاً',
+            userImage: 'assets/images/user.jpg',
+            date: '2026-03-01',
+          ),
+        ],
       ),
+
       Restaurant(
         name: 'مطعم الشيف',
-        image: 'assets/images/user.jpg',
-        rating: 4.9,
-        reviews: 100,
+        image: 'assets/images/auth_background.png',
+        rating: 4.6,
+        reviews: 60,
         dishes: 'الطعام المتنوع - 100 طبق',
+        ordersCount: 300,
+        preparingTime: 30,
+
+        meals: [
+          Meal(
+            name: 'ستيك',
+            price: 40,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'باستا',
+            price: 25,
+            image: 'assets/images/auth_background.png',
+          ),
+        ],
+
+        subscriptions: [],
+        reviewsList: [],
       ),
+
       Restaurant(
         name: 'مطعم الدجاج',
-        image: 'assets/images/user.jpg',
+        image: 'assets/images/auth_background.png',
         rating: 4.9,
         reviews: 100,
         dishes: 'عجائب الدجاج - 100 طبق',
+        ordersCount: 500,
+        preparingTime: 22,
+        meals: [],
+        subscriptions: [],
+        reviewsList: [],
       ),
+
       Restaurant(
         name: 'مطعم كنتاكي',
-        image: 'assets/images/user.jpg',
-        rating: 4.9,
-        reviews: 100,
+        image: 'assets/images/auth_background.png',
+        rating: 4.8,
+        reviews: 95,
         dishes: 'عجائب الدجاج - 100 طبق',
+        ordersCount: 470,
+        preparingTime: 18,
+        meals: [],
+        subscriptions: [],
+        reviewsList: [],
       ),
+
       Restaurant(
         name: 'مطعم الدجاج',
-        image: 'assets/images/user.jpg',
+        image: 'assets/images/auth_background.png',
         rating: 4.9,
         reviews: 100,
         dishes: 'عجائب الدجاج - 100 طبق',
+        ordersCount: 600,
+        preparingTime: 26,
+        meals: [],
+        subscriptions: [],
+        reviewsList: [],
       ),
     ];
     final restaurant = restaurants[index];
@@ -150,7 +272,7 @@ class RestaurantCard extends StatelessWidget {
       onTap: () => Navigator.pushNamed(
         context,
         '/restaurant_detail',
-        arguments: restaurant.name,
+        arguments: restaurant,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -254,7 +376,7 @@ class RestaurantCard extends StatelessWidget {
                         onPressed: () => Navigator.pushNamed(
                           context,
                           '/restaurant_detail',
-                          arguments: restaurant.name,
+                          arguments: restaurant,
                         ),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.zero,
