@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:voyra_app/models/meal.dart';
-import 'package:voyra_app/models/restaurant.dart';
-import 'package:voyra_app/models/review.dart';
-import 'package:voyra_app/models/subscription.dart';
-import 'package:voyra_app/widgets/custom_dropdown_field.dart';
-import '../../core/app_theme.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../core/common_dependencies.dart';
 
 class RestaurantsScreen extends StatefulWidget {
   const RestaurantsScreen({super.key});
@@ -32,7 +24,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               children: [
                 CustomTextField(
                   hint: 'بحث',
-                  prefixIcon: const Icon(Icons.search),
+                  prefixIcon: const Center(
+                    widthFactor: 1.0,
+                    child: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 14),
+                  ),
                   height: 40,
                   fontSize: 14,
                 ),
@@ -124,6 +119,31 @@ class RestaurantCard extends StatelessWidget {
             price: 15,
             image: 'assets/images/auth_background.png',
           ),
+          Meal(
+            name: 'برياني دجاج',
+            price: 20,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'شاورما',
+            price: 15,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'شاورما',
+            price: 15,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'شاورما',
+            price: 15,
+            image: 'assets/images/auth_background.png',
+          ),
+          Meal(
+            name: 'شاورما',
+            price: 15,
+            image: 'assets/images/auth_background.png',
+          ),
         ],
 
         subscriptions: [
@@ -132,16 +152,50 @@ class RestaurantCard extends StatelessWidget {
             duration: '3 أشهر',
             price: 200,
             mealsCount: 8,
+            description:
+                'يقدم هذا النوع من الاشتراك 8 وجبات مميزة مليئة بالبروتين منهم 4 مع نشويات و 4 مع كربوهيدرات',
           ),
           Subscription(
             title: 'وجبات برو',
             duration: '6 أشهر',
             price: 350,
             mealsCount: 16,
+            description:
+                'باقة مخصصة للرياضيين المحترفين تحتوي على 16 وجبة غنية بالألياف والمعادن الضرورية لبناء العضلات',
+          ),
+          Subscription(
+            title: 'وجبات عادية',
+            duration: '3 أشهر',
+            price: 200,
+            mealsCount: 8,
+            description:
+                'يقدم هذا النوع من الاشتراك 8 وجبات مميزة مليئة بالبروتين منهم 4 مع نشويات و 4 مع كربوهيدرات',
+          ),
+          Subscription(
+            title: 'وجبات برو',
+            duration: '6 أشهر',
+            price: 350,
+            mealsCount: 16,
+            description:
+                'باقة مخصصة للرياضيين المحترفين تحتوي على 16 وجبة غنية بالألياف والمعادن الضرورية لبناء العضلات',
           ),
         ],
 
         reviewsList: [
+          Review(
+            userName: 'محمد احمد',
+            rating: 4.8,
+            comment: 'رائع جدا والطعم ممتاز',
+            userImage: 'assets/images/user.jpg',
+            date: '2026-03-01',
+          ),
+          Review(
+            userName: 'سارة خالد',
+            rating: 5.0,
+            comment: 'أفضل مطعم جربته',
+            userImage: 'assets/images/user.jpg',
+            date: '2026-03-01',
+          ),
           Review(
             userName: 'محمد احمد',
             rating: 4.8,
@@ -275,6 +329,7 @@ class RestaurantCard extends StatelessWidget {
         arguments: restaurant,
       ),
       child: Container(
+        padding: EdgeInsets.only(top: 14, right: 4, left: 4),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
@@ -288,21 +343,15 @@ class RestaurantCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // قسم اللوجو - يأخذ 40% من مساحة الكرت
-            Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(restaurant.image),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
+            Container(
+              width: 85,
+              height: 85,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(restaurant.image),
+                  fit: BoxFit.cover,
                 ),
+                borderRadius: const BorderRadius.all(Radius.circular(100)),
               ),
             ),
 
@@ -335,7 +384,11 @@ class RestaurantCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.star, color: Colors.orange, size: 14),
+                        const FaIcon(
+                          FontAwesomeIcons.solidStar,
+                          color: Colors.orange,
+                          size: 12,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           '${restaurant.rating}',

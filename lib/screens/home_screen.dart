@@ -1,14 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:voyra_app/core/app_theme.dart';
-import 'package:voyra_app/screens/basket_screen.dart';
-import 'package:voyra_app/screens/restaurants/restaurants_screen.dart';
-import 'package:voyra_app/screens/settings_screen.dart';
-import 'package:voyra_app/screens/workouts_screen.dart';
-import 'package:voyra_app/widgets/custom_bottom_nav_bar.dart';
-import 'package:voyra_app/widgets/custom_drawer.dart';
-import 'package:voyra_app/widgets/drawer_menu_button.dart';
+import '../core/common_dependencies.dart';
+import 'restaurants/restaurants_screen.dart';
+import 'settings_screen.dart';
+import 'workouts_screen.dart';
 import 'notifications_page.dart';
 import 'search_page.dart';
 
@@ -65,17 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontFamily: GoogleFonts.cairo().fontFamily,
         ),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BasketScreen()),
-            );
-          },
-          icon: FaIcon(FontAwesomeIcons.cartShopping, color: AppColors.primary),
-        ),
-      ],
+      actions: [CartButton()],
     );
   }
 
@@ -187,14 +170,14 @@ class _HomeScreenState extends State<HomeScreen> {
           // البحث والإشعارات
           Row(
             children: [
-              _headerIconButton(Icons.search, () {
+              _headerIconButton(FontAwesomeIcons.magnifyingGlass, () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SearchScreen()),
                 );
               }),
               const SizedBox(width: 10),
-              _headerIconButton(Icons.notifications_none, () {
+              _headerIconButton(FontAwesomeIcons.bell, () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotificationsPage()),
@@ -221,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CircleAvatar(
           radius: 25,
           backgroundColor: AppColors.surface.withValues(alpha: 0.1),
-          child: Icon(icon, color: AppColors.surface),
+          child: FaIcon(icon, color: AppColors.surface, size: 20),
         ),
       ),
     );
@@ -333,11 +316,11 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             children: [
-              _buildSportItem(Icons.fitness_center),
-              _buildSportItem(Icons.pedal_bike),
-              _buildSportItem(Icons.directions_run),
-              _buildSportItem(Icons.sports_mma),
-              _buildSportItem(Icons.pool),
+              _buildSportItem(FontAwesomeIcons.dumbbell),
+              _buildSportItem(FontAwesomeIcons.bicycle),
+              _buildSportItem(FontAwesomeIcons.personRunning),
+              _buildSportItem(FontAwesomeIcons.handFist),
+              _buildSportItem(FontAwesomeIcons.personSwimming),
             ],
           ),
         ),
@@ -356,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 5),
         ],
       ),
-      child: Icon(icon, size: 40, color: AppColors.primary),
+      child: Center(child: FaIcon(icon, size: 30, color: AppColors.primary)),
     );
   }
 }

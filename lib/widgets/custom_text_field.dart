@@ -16,7 +16,12 @@ class CustomTextField extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? textColor;
   final int maxLines;
-  final double? height; // optional fixed height for the field
+  final double? height;
+  final ValueChanged<String>? onChanged;
+  final FormFieldSetter<String>? onSaved;
+  final double borderRadius;
+  final String? Function(String?)? validator;
+  final bool isError;
 
   const CustomTextField({
     super.key,
@@ -35,6 +40,11 @@ class CustomTextField extends StatelessWidget {
     this.textColor,
     this.maxLines = 1,
     this.height,
+    this.onChanged,
+    this.onSaved,
+    this.borderRadius = 14.0,
+    this.validator,
+    this.isError = false,
   });
 
   @override
@@ -54,15 +64,19 @@ class CustomTextField extends StatelessWidget {
           const SizedBox(height: 8),
         ],
         SizedBox(
-          height: height,
+          height: height != null && validator == null ? height : null,
           child: TextFormField(
             controller: controller,
-            initialValue: initialValue,
+            initialValue: controller == null ? initialValue : null,
             obscureText: obscureText,
             keyboardType: keyboardType,
             readOnly: readOnly,
             onTap: onTap,
+            onChanged: onChanged,
+            onSaved: onSaved,
             maxLines: maxLines,
+            validator: validator,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             style: TextStyle(
               fontSize: fontSize ?? 16,
               fontWeight: fontWeight ?? FontWeight.normal,
@@ -74,26 +88,35 @@ class CustomTextField extends StatelessWidget {
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
               filled: true,
-              isDense: false,
-              isCollapsed: false,
               fillColor: AppColors.surface,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
-                vertical: 8,
+                vertical: 12,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(
-                  color: Color(0xFFD81B60),
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(
+                  color: isError ? Colors.red : Colors.grey.shade300,
                   width: 1,
                 ),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(
+                  color: isError ? Colors.red : AppColors.primary,
+                  width: 1,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(color: Colors.red, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(color: Colors.red, width: 1),
+              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide.none,
               ),
             ),

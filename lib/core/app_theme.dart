@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   static const Color primary = Color(0xFFCE0045); // Pink/Red
-  static const Color background = Color(0xFFF9F9F9); // Very light grey
+  static const Color background = Color(0xFFEAEAEA); // Very light grey
   static const Color surface = Colors.white;
   static const Color textPrimary = Color(0xFF333333);
   static const Color textSecondary = Color(0xFF757575);
@@ -19,8 +19,8 @@ class AppTheme {
         seedColor: AppColors.primary,
         primary: AppColors.primary,
         secondary: AppColors.primary,
-        background: AppColors.background,
         surface: AppColors.surface,
+        error: Colors.red,
       ),
       useMaterial3: true,
       textTheme: GoogleFonts.cairoTextTheme(),
@@ -33,7 +33,7 @@ class AppTheme {
           color: AppColors.textPrimary,
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          fontFamily: GoogleFonts.cairo.call().fontFamily,
+          fontFamily: GoogleFonts.cairo().fontFamily,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -67,7 +67,7 @@ class AppTheme {
           textStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            fontFamily: GoogleFonts.cairo.call().fontFamily,
+            fontFamily: GoogleFonts.cairo().fontFamily,
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/app_theme.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
@@ -15,8 +16,8 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
+        topLeft: Radius.circular(25),
+        topRight: Radius.circular(25),
       ),
       child: Container(
         decoration: const BoxDecoration(
@@ -64,19 +65,20 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget _buildIcon(int index) {
     final isSelected = currentIndex == index;
     final icons = [
-      Icons.home_outlined,
-      Icons.calculate_outlined,
-      Icons.calendar_today_outlined,
-      Icons.restaurant_menu_outlined,
+      FontAwesomeIcons.house,
+      FontAwesomeIcons.dumbbell,
+      FontAwesomeIcons.calculator,
+      FontAwesomeIcons.utensils,
     ];
     return CircleAvatar(
       radius: 18,
       backgroundColor: isSelected
           ? AppColors.primary
           : AppColors.primary.withAlpha(0), // لون خفيف إذا غير محدد
-      child: Icon(
+      child: FaIcon(
         icons[index],
         color: isSelected ? AppColors.surface : Colors.grey,
+        size: 16,
       ),
     );
   }

@@ -81,7 +81,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 CustomTextField(
                   controller: nameController,
                   hint: "اسم المستخدم",
-                  prefixIcon: Icon(Icons.person, size: 20),
+                  prefixIcon: const Center(
+                    widthFactor: 1.0,
+                    child: FaIcon(FontAwesomeIcons.solidUser, size: 14),
+                  ),
                 ),
                 const SizedBox(height: 20),
 
@@ -97,24 +100,36 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 _input(
                   "البريد الإلكتروني",
                   controller: emailController,
-                  icon: Icons.email,
+                  icon: FontAwesomeIcons.solidEnvelope,
                 ),
                 CustomTextField(
                   controller: emailController,
                   hint: "البريد الإلكتروني",
-                  prefixIcon: Icon(Icons.email, size: 20),
+                  prefixIcon: const Center(
+                    widthFactor: 1.0,
+                    child: FaIcon(FontAwesomeIcons.solidEnvelope, size: 14),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
                   controller: titleController,
                   hint: "عنوان الرسالة",
-                  prefixIcon: Icon(Icons.title, size: 20),
+                  prefixIcon: const Center(
+                    widthFactor: 1.0,
+                    child: FaIcon(FontAwesomeIcons.penNib, size: 14),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
                   controller: messageController,
                   hint: "نص الرسالة",
-                  prefixIcon: Icon(Icons.message, size: 20),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: FaIcon(FontAwesomeIcons.solidMessage, size: 14),
+                    ),
+                  ),
                   maxLines: 5,
                 ),
                 const SizedBox(height: 25),
@@ -180,7 +195,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: icon != null ? Icon(icon, size: 20) : null,
+          prefixIcon: icon != null
+              ? Center(widthFactor: 1.0, child: FaIcon(icon, size: 14))
+              : null,
           filled: true,
           fillColor: AppColors.surface,
           isDense: true,
@@ -278,7 +295,10 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                       horizontal: 0,
                       vertical: 12,
                     ),
-                    prefixIcon: Icon(Icons.phone, size: 20),
+                    prefixIcon: Center(
+                      widthFactor: 1.0,
+                      child: FaIcon(FontAwesomeIcons.phone, size: 14),
+                    ),
                   ),
                 ),
               ),

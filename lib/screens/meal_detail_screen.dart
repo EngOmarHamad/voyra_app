@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_theme.dart';
 
@@ -39,7 +40,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                           top: 16,
                           left: 16,
                           child: IconButton(
-                            icon: const Icon(Icons.arrow_forward),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.arrowRight,
+                              size: 18,
+                            ),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),
@@ -66,10 +70,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                                   color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                child: const Icon(
-                                  Icons.favorite,
+                                child: const FaIcon(
+                                  FontAwesomeIcons.solidHeart,
                                   color: AppColors.surface,
-                                  size: 16,
+                                  size: 14,
                                 ),
                               ),
                             ],
@@ -245,7 +249,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                     children: [
                       IconButton(
                         onPressed: () => setState(() => quantity++),
-                        icon: const Icon(Icons.add, size: 18),
+                        icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
                       ),
                       SizedBox(
                         width: 30,
@@ -260,7 +264,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                         onPressed: () {
                           if (quantity > 1) setState(() => quantity--);
                         },
-                        icon: const Icon(Icons.remove, size: 18),
+                        icon: const FaIcon(FontAwesomeIcons.minus, size: 14),
                       ),
                     ],
                   ),

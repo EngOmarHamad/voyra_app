@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voyra_app/core/app_theme.dart';
+import 'package:voyra_app/screens/profile_screen.dart';
 import 'package:voyra_app/screens/static/about_us_screen.dart';
 import 'package:voyra_app/screens/static/contact_us_screen.dart';
 import 'package:voyra_app/screens/static/privacy_screen.dart';
@@ -32,31 +34,33 @@ class CustomDrawer extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   children: [
                     _buildMenuItem(
-                      Icons.person_outline,
+                      FontAwesomeIcons.user,
                       "الملف الشخصي",
-                      () => {},
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ProfileScreen()),
+                      ),
                     ),
                     _buildMenuItem(
-                      Icons.shopping_basket_outlined,
+                      FontAwesomeIcons.basketShopping,
                       "حجوزاتي",
                       () => {},
                     ),
                     _buildMenuItem(
-                      Icons.account_balance_wallet_outlined,
+                      FontAwesomeIcons.wallet,
                       "المحفظة",
                       () => {},
                     ),
                     _buildMenuItem(
-                      Icons.chat_bubble_outline,
+                      FontAwesomeIcons.message,
                       "قائمة المحادثات",
                       () => {},
                     ),
                     _buildMenuItem(
-                      Icons.share_outlined,
+                      FontAwesomeIcons.shareNodes,
                       "مشاركة التطبيق",
                       () => {},
                     ),
-
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Divider(
@@ -65,10 +69,9 @@ class CustomDrawer extends StatelessWidget {
                         endIndent: 10,
                       ),
                     ),
-
-                    _buildMenuItem(Icons.language, "اللغة", () => {}),
+                    _buildMenuItem(FontAwesomeIcons.globe, "اللغة", () => {}),
                     _buildMenuItem(
-                      Icons.info_outline,
+                      FontAwesomeIcons.circleInfo,
                       "عن التطبيق",
                       () => Navigator.push(
                         context,
@@ -76,7 +79,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                     _buildMenuItem(
-                      Icons.phone_in_talk_outlined,
+                      FontAwesomeIcons.phone,
                       "تواصل معنا",
                       () => Navigator.push(
                         context,
@@ -84,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                     _buildMenuItem(
-                      Icons.description_outlined,
+                      FontAwesomeIcons.fileLines,
                       "الشروط والاحكام",
                       () => Navigator.push(
                         context,
@@ -92,17 +95,16 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                     _buildMenuItem(
-                      Icons.privacy_tip_outlined,
+                      FontAwesomeIcons.shieldHalved,
                       "سياسة الخصوصية",
                       () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => PrivacyScreen()),
                       ),
                     ),
-
                     const SizedBox(height: 20),
                     _buildMenuItem(
-                      Icons.logout,
+                      FontAwesomeIcons.rightFromBracket,
                       "تسجيل الخروج",
                       () => {},
                       isLogout: true,
@@ -159,7 +161,11 @@ class CustomDrawer extends StatelessWidget {
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.close, color: AppColors.surface),
+            icon: const FaIcon(
+              FontAwesomeIcons.xmark,
+              color: AppColors.surface,
+              size: 20,
+            ),
             onPressed: () => Navigator.pop(context), // لإغلاق الـ Drawer
           ),
         ],
@@ -179,7 +185,7 @@ class CustomDrawer extends StatelessWidget {
       visualDensity: const VisualDensity(
         vertical: -2,
       ), // لتقليل المسافات بين العناصر
-      leading: Icon(icon, color: AppColors.surface, size: 22),
+      leading: FaIcon(icon, color: AppColors.surface, size: 18),
       title: Text(
         title,
         style: const TextStyle(color: AppColors.surface, fontSize: 15),

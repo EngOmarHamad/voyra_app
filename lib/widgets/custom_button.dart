@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
+import '../core/common_dependencies.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -29,10 +30,10 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Cairo',
+            fontFamily: GoogleFonts.cairo().fontFamily,
           ),
         ),
         child: Text(text),
