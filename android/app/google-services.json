@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "667066161263",
+    "project_id": "voyra-app-a6f9d",
+    "storage_bucket": "voyra-app-a6f9d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667066161263:android:436d1a990141ca153d959a",
+        "android_client_info": {
+          "package_name": "com.example.voyra_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt7tGXhtAsPN_A6JkozY10tt2MDiZxqb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

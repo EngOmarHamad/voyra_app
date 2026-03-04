@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:voyra_app/widgets/auth_layout.dart';
@@ -35,34 +37,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _handleSignUp() {
+  void _handleSignUp() async {
     if (!_agree) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.warning,
         text: 'يرجى الموافقة على الشروط والأحكام أولاً',
-        confirmBtnText: 'موافق',
         confirmBtnColor: AppColors.primary,
       );
       return;
     }
 
     if (_formKey.currentState!.validate()) {
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        title: 'تم إنشاء الحساب بنجاح',
-        text: 'أهلاً بك في فويرا',
-        confirmBtnText: 'موافق',
-        confirmBtnColor: AppColors.primary,
-        onConfirmBtnTap: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => const SignInScreen()),
-            (route) => false,
+      try {
+        // 🔹 إنشاء المستخدم
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
+
+        // 🔹 تخزين بيانات إضافية في Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+              'name': _nameController.text.trim(),
+              'phone': _phoneController.text.trim(),
+              'email': _emailController.text.trim(),
+              'createdAt': Timestamp.now(),
+            });
+        if (mounted) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'تم إنشاء الحساب بنجاح',
+            text: 'أهلاً بك في فويرا',
+            confirmBtnColor: AppColors.primary,
+            onConfirmBtnTap: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const SignInScreen()),
+                (route) => false,
+              );
+            },
           );
-        },
-      );
+        }
+      } on FirebaseAuthException catch (e) {
+        String message = "حدث خطأ";
+
+        if (e.code == 'email-already-in-use') {
+          message = 'البريد مستخدم مسبقاً';
+        } else if (e.code == 'weak-password') {
+          message = 'كلمة المرور ضعيفة جداً';
+        } else if (e.code == 'invalid-email') {
+          message = 'البريد غير صالح';
+        }
+        if (mounted) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: message,
+            confirmBtnColor: AppColors.primary,
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'حدث خطأ غير متوقع',
+            confirmBtnColor: AppColors.primary,
+          );
+        }
+      }
     }
   }
 

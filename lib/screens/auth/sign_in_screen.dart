@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:voyra_app/core/app_theme.dart';
 import 'package:voyra_app/screens/auth/forgot_password_screen.dart';
@@ -21,21 +22,44 @@ class _SignInScreenState extends State<SignInScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
-  void _handleSignIn() {
+  void _handleSignIn() async {
     if (_formKey.currentState!.validate()) {
-      // Simulate successful login
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        title: 'تم تسجيل الدخول بنجاح',
-        text: 'أهلاً بك مجدداً في فويرا',
-        confirmBtnText: 'موافق',
-        confirmBtnColor: AppColors.primary,
-      ).then((value) {
-        if (!mounted) return;
-        Navigator.pushReplacementNamed(context, "/home");
-      });
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _phoneController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (mounted) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: 'تم تسجيل الدخول بنجاح',
+            confirmBtnColor: AppColors.primary,
+            onConfirmBtnTap: () {
+              // روح على الصفحة الرئيسية
+              Navigator.pushReplacementNamed(context, '/home');
+            },
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        String message = "حدث خطأ";
+
+        if (e.code == 'user-not-found') {
+          message = 'المستخدم غير موجود';
+        } else if (e.code == 'wrong-password') {
+          message = 'كلمة المرور غير صحيحة';
+        } else if (e.code == 'invalid-email') {
+          message = 'البريد غير صالح';
+        }
+        if (mounted) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: message,
+            confirmBtnColor: AppColors.primary,
+          );
+        }
+      }
     }
   }
 
