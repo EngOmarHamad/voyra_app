@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
     this.fontWeight,
     this.textColor,
     this.maxLines = 1,
-    this.height,
+    this.height = 45,
     this.onChanged,
     this.onSaved,
     this.borderRadius = 14.0,

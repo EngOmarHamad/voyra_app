@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voyra_app/core/app_theme.dart';
-import 'package:voyra_app/screens/profile_screen.dart';
+import 'package:voyra_app/screens/profile/profile_screen.dart';
 import 'package:voyra_app/screens/static/about_us_screen.dart';
 import 'package:voyra_app/screens/static/contact_us_screen.dart';
 import 'package:voyra_app/screens/static/privacy_screen.dart';

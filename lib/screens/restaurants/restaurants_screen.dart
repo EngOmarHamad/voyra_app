@@ -1,4 +1,5 @@
 import '../../core/common_dependencies.dart';
+import 'restaurant_detail_screen.dart';
 
 class RestaurantsScreen extends StatefulWidget {
   const RestaurantsScreen({super.key});
@@ -323,10 +324,11 @@ class RestaurantCard extends StatelessWidget {
     final restaurant = restaurants[index];
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(
+      onTap: () => Navigator.push(
         context,
-        '/restaurant_detail',
-        arguments: restaurant,
+        MaterialPageRoute(
+          builder: (context) => RestaurantDetailScreen(restaurant: restaurant),
+        ),
       ),
       child: Container(
         padding: EdgeInsets.only(top: 14, right: 4, left: 4),

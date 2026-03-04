@@ -22,6 +22,7 @@ class AppTheme {
         surface: AppColors.surface,
         error: Colors.red,
       ),
+      
       useMaterial3: true,
       textTheme: GoogleFonts.cairoTextTheme(),
       appBarTheme: AppBarTheme(

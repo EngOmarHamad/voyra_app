@@ -1,4 +1,5 @@
 import '../../core/common_dependencies.dart';
+import '../../models/order.dart';
 import '../../models/order_item.dart';
 import 'order_detail_screen.dart';
 
@@ -10,56 +11,89 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  final List<OrderItem> orders = const [
-    OrderItem(
+  // بيانات وهمية — ستُستبدل بـ API لاحقاً
+  final List<Order> orders = [
+    Order(
       id: '1',
-      mealName: 'وجبة دجاج تكا',
-      restaurantName: 'مطعم الدجاج الملكي',
-      price: '500 ريال',
-      date: '22/3/2025  2:00م',
-      imageUrl:
-          'https://images.unsplash.com/photo-1594000108821-4202167d5308?q=80&w=200&auto=format&fit=crop',
+      orderNumber: '#1256564',
+      date: DateTime(2025, 3, 22, 14, 0),
       status: OrderStatus.newOrder,
+      restaurantName: 'مطعم دجاج تكا',
+      restaurantImageUrl:
+          'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
+      items: const [
+        OrderItem(name: 'برجر دجاج', quantity: 2, price: 200),
+        OrderItem(name: 'دجاج برياني', quantity: 1, price: 200),
+        OrderItem(name: 'دجاج مشوي', quantity: 1, price: 200),
+      ],
+      paymentMethod: PaymentMethod.wallet,
+      deliveryFee: 200,
+      tax: 200,
+      adminFee: 500,
     ),
-    OrderItem(
+    Order(
       id: '2',
-      mealName: 'وجبة دجاج تكا',
-      restaurantName: 'مطعم الدجاج الملكي',
-      price: '500 ريال',
-      date: '22/3/2025  2:00م',
-      imageUrl:
-          'https://images.unsplash.com/photo-1594000108821-4202167d5308?q=80&w=200&auto=format&fit=crop',
+      orderNumber: '#1256565',
+      date: DateTime(2025, 3, 21, 12, 30),
       status: OrderStatus.preparing,
+      restaurantName: 'مطعم دجاج تكا',
+      restaurantImageUrl:
+          'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
+      items: const [OrderItem(name: 'دجاج مشوي', quantity: 2, price: 150)],
+      paymentMethod: PaymentMethod.creditCard,
+      deliveryFee: 150,
+      tax: 100,
+      adminFee: 200,
     ),
-    OrderItem(
+    Order(
       id: '3',
-      mealName: 'وجبة دجاج تكا',
-      restaurantName: 'مطعم الدجاج الملكي',
-      price: '500 ريال',
-      date: '22/3/2025  2:00م',
-      imageUrl:
-          'https://images.unsplash.com/photo-1594000108821-4202167d5308?q=80&w=200&auto=format&fit=crop',
+      orderNumber: '#1256566',
+      date: DateTime(2025, 3, 20, 19, 0),
       status: OrderStatus.onTheWay,
+      restaurantName: 'مطعم دجاج تكا',
+      restaurantImageUrl:
+          'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
+      items: const [
+        OrderItem(name: 'برجر دجاج', quantity: 1, price: 200),
+        OrderItem(name: 'دجاج برياني', quantity: 2, price: 200),
+      ],
+      paymentMethod: PaymentMethod.wallet,
+      deliveryFee: 200,
+      tax: 150,
+      adminFee: 300,
     ),
-    OrderItem(
+    Order(
       id: '4',
-      mealName: 'وجبة دجاج تكا',
-      restaurantName: 'مطعم الدجاج الملكي',
-      price: '500 ريال',
-      date: '22/3/2025  2:00م',
-      imageUrl:
-          'https://images.unsplash.com/photo-1594000108821-4202167d5308?q=80&w=200&auto=format&fit=crop',
+      orderNumber: '#1256567',
+      date: DateTime(2025, 3, 18, 13, 0),
       status: OrderStatus.delivered,
+      restaurantName: 'مطعم دجاج تكا',
+      restaurantImageUrl:
+          'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
+      items: const [
+        OrderItem(name: 'دجاج مشوي', quantity: 3, price: 150),
+        OrderItem(name: 'دجاج برياني', quantity: 1, price: 200),
+      ],
+      paymentMethod: PaymentMethod.cash,
+      deliveryFee: 100,
+      tax: 120,
+      adminFee: 200,
     ),
-    OrderItem(
+    Order(
       id: '5',
-      mealName: 'وجبة دجاج تكا',
-      restaurantName: 'مطعم الدجاج الملكي',
-      price: '500 ريال',
-      date: '22/3/2025  2:00م',
-      imageUrl:
-          'https://images.unsplash.com/photo-1594000108821-4202167d5308?q=80&w=200&auto=format&fit=crop',
+      orderNumber: '#1256568',
+      date: DateTime(2025, 3, 15, 10, 0),
       status: OrderStatus.cancelled,
+      restaurantName: 'مطعم دجاج تكا',
+      restaurantImageUrl:
+          'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
+      items: const [OrderItem(name: 'برجر دجاج', quantity: 1, price: 200)],
+      paymentMethod: PaymentMethod.wallet,
+      deliveryFee: 200,
+      tax: 100,
+      adminFee: 150,
+      cancelReason: 'أردت تبديل الوجبة بوجبة أخرى',
+      cancelDate: DateTime(2025, 10, 12),
     ),
   ];
 
@@ -90,20 +124,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: orders.length,
-      itemBuilder: (context, index) {
-        return _buildOrderCard(orders[index]);
-      },
+      itemBuilder: (context, index) => _buildOrderCard(orders[index]),
     );
   }
 
-  Widget _buildOrderCard(OrderItem order) {
+  Widget _buildOrderCard(Order order) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const OrderDetailScreen()),
+            MaterialPageRoute(
+              builder: (context) => OrderDetailScreen(order: order),
+            ),
           );
         },
         borderRadius: BorderRadius.circular(15),
@@ -122,11 +156,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
           child: Row(
             children: [
-              // Right Section: Image
+              // صورة المطعم
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  order.imageUrl,
+                  order.restaurantImageUrl,
                   width: 75,
                   height: 75,
                   fit: BoxFit.cover,
@@ -139,47 +173,49 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              // Middle Section: Name, Restaurant, Price
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    order.mealName,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.cairo().fontFamily,
+
+              // اسم الطلب + المطعم + السعر
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      order.displayTitle,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: GoogleFonts.cairo().fontFamily,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    order.restaurantName,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                      fontFamily: GoogleFonts.cairo().fontFamily,
+                    const SizedBox(height: 4),
+                    Text(
+                      order.restaurantName,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                        fontFamily: GoogleFonts.cairo().fontFamily,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    order.price,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.cairo().fontFamily,
+                    const SizedBox(height: 8),
+                    Text(
+                      order.formattedGrandTotal,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: GoogleFonts.cairo().fontFamily,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
-              const Spacer(),
-              // Left Section: Status & Date
+              // حالة الطلب + التاريخ
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                spacing: 30,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -200,8 +236,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 30),
                   Text(
-                    order.date,
+                    '${order.date.day}/${order.date.month}/${order.date.year}',
                     style: TextStyle(
                       fontSize: 11,
                       color: Colors.grey[400],

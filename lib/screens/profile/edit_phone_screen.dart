@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import '../core/app_theme.dart';
-import '../widgets/custom_text_field.dart';
-import '../widgets/custom_button.dart';
-import 'auth/verification_code_screen.dart';
+import '../../core/common_dependencies.dart';
+import '../auth/verification_code_screen.dart';
 
 class EditPhoneScreen extends StatefulWidget {
   const EditPhoneScreen({super.key});
@@ -40,25 +37,44 @@ class _EditPhoneScreenState extends State<EditPhoneScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 'ادخل رقم الجوال الجديد',
+                textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
               ),
               const SizedBox(height: 32),
               CustomTextField(
                 controller: _phoneController,
+                borderRadius: 30,
+                height: 45,
                 label: 'رقم الجوال',
                 hint: '5xxxxxxxx',
                 keyboardType: TextInputType.phone,
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('🇸🇦', style: TextStyle(fontSize: 22)),
+                      Image.asset(
+                        "assets/images/palestine_flag.svg",
+                        width: 24,
+                        height: 24,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Text(
+                            '🇵🇸',
+                            style: TextStyle(fontSize: 22),
+                          );
+                        },
+                      ),
                     ],
+                  ),
+                ),
+                prefixIcon: const UnconstrainedBox(
+                  child: FaIcon(
+                    FontAwesomeIcons.mobileScreenButton,
+                    size: 18,
+                    color: AppColors.textSecondary,
                   ),
                 ),
                 validator: (value) {
@@ -71,9 +87,8 @@ class _EditPhoneScreenState extends State<EditPhoneScreen> {
                   return null;
                 },
               ),
-              const Spacer(),
+              const SizedBox(height: 20),
               CustomButton(text: 'ارسال', onPressed: _handleSend),
-              const SizedBox(height: 40),
             ],
           ),
         ),

@@ -32,7 +32,10 @@ class _SignInScreenState extends State<SignInScreen> {
         text: 'أهلاً بك مجدداً في فويرا',
         confirmBtnText: 'موافق',
         confirmBtnColor: AppColors.primary,
-      );
+      ).then((value) {
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, "/home");
+      });
     }
   }
 

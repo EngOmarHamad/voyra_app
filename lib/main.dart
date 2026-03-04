@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:voyra_app/screens/auth/sign_in_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/restaurants/restaurants_screen.dart';
 import 'screens/splash_screen.dart';
 import 'core/app_theme.dart';
 import 'screens/restaurants/restaurant_detail_screen.dart';
-import 'screens/meal_detail_screen.dart';
+import 'screens/restaurants/meal_detail_screen.dart';
 import 'screens/cart/basket_screen.dart';
 import 'screens/cart/checkout_screen.dart';
 import 'screens/order/orders_screen.dart';
@@ -37,8 +38,7 @@ class VoyraApp extends StatelessWidget {
       routes: {
         '/sign_in': (context) => const SignInScreen(),
         '/home': (context) => const HomeScreen(),
-        '/restaurant_detail': (context) => const RestaurantDetailScreen(),
-        '/meal_detail': (context) => const MealDetailScreen(),
+        '/restaurants': (context) => const RestaurantsScreen(),
         '/basket': (context) => const BasketScreen(),
         '/checkout': (context) => const CheckoutScreen(),
         '/orders': (context) => const OrdersScreen(),

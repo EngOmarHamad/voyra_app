@@ -2,8 +2,8 @@ import '../../core/common_dependencies.dart';
 import '../../widgets/restaurant_detail/restaurant_detail_widgets.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
-  const RestaurantDetailScreen({super.key});
-
+  const RestaurantDetailScreen({super.key, required this.restaurant});
+  final Restaurant restaurant;
   @override
   State<RestaurantDetailScreen> createState() => _RestaurantDetailScreenState();
 }
@@ -27,7 +27,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final restaurant = ModalRoute.of(context)!.settings.arguments as Restaurant;
+    final restaurant = widget.restaurant;
 
     if (isLoading) {
       return const RestaurantShimmer();
