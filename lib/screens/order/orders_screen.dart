@@ -1,6 +1,4 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order_model.dart';
-import '../../models/order_item.dart';
 import 'order_detail_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -23,9 +21,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(id: '1', name: 'برجر دجاج', quantity: 2, price: 200),
-        OrderItem(id: '2', name: 'دجاج برياني', quantity: 1, price: 200),
-        OrderItem(id: '3', name: 'دجاج مشوي', quantity: 1, price: 200),
+        OrderItemModel(id: '1', name: 'برجر دجاج', quantity: 2, price: 200),
+        OrderItemModel(id: '2', name: 'دجاج برياني', quantity: 1, price: 200),
+        OrderItemModel(id: '3', name: 'دجاج مشوي', quantity: 1, price: 200),
       ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,
@@ -42,7 +40,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(id: '4', name: 'دجاج مشوي', quantity: 2, price: 150),
+        OrderItemModel(id: '4', name: 'دجاج مشوي', quantity: 2, price: 150),
       ],
       paymentMethod: PaymentMethod.creditCard,
       deliveryFee: 150,
@@ -59,8 +57,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(id: '5', name: 'برجر دجاج', quantity: 1, price: 200),
-        OrderItem(id: '6', name: 'دجاج برياني', quantity: 2, price: 200),
+        OrderItemModel(id: '5', name: 'برجر دجاج', quantity: 1, price: 200),
+        OrderItemModel(id: '6', name: 'دجاج برياني', quantity: 2, price: 200),
       ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,
@@ -77,8 +75,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(id: '7', name: 'دجاج مشوي', quantity: 3, price: 150),
-        OrderItem(id: '8', name: 'دجاج برياني', quantity: 1, price: 200),
+        OrderItemModel(id: '7', name: 'دجاج مشوي', quantity: 3, price: 150),
+        OrderItemModel(id: '8', name: 'دجاج برياني', quantity: 1, price: 200),
       ],
       paymentMethod: PaymentMethod.cash,
       deliveryFee: 100,
@@ -95,7 +93,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(id: '9', name: 'برجر دجاج', quantity: 1, price: 200),
+        OrderItemModel(id: '9', name: 'برجر دجاج', quantity: 1, price: 200),
       ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,

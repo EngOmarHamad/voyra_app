@@ -5,7 +5,7 @@ import 'restaurant_empty_state.dart';
 import 'meal_card.dart';
 
 class RestaurantMealsSection extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const RestaurantMealsSection({super.key, required this.restaurant});
 

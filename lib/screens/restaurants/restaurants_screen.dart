@@ -100,7 +100,7 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final restaurants = [
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم الدجاج',
         image: 'assets/images/auth_background.png',
         rating: 4.9,
@@ -110,37 +110,37 @@ class RestaurantCard extends StatelessWidget {
         preparingTime: 25,
 
         meals: [
-          Meal(
+          MealModel(
             name: 'برياني دجاج',
             price: 20,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'شاورما',
             price: 15,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'برياني دجاج',
             price: 20,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'شاورما',
             price: 15,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'شاورما',
             price: 15,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'شاورما',
             price: 15,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'شاورما',
             price: 15,
             image: 'assets/images/auth_background.png',
@@ -148,7 +148,7 @@ class RestaurantCard extends StatelessWidget {
         ],
 
         subscriptions: [
-          Subscription(
+          SubscriptionModel(
             title: 'وجبات عادية',
             duration: '3 أشهر',
             price: 200,
@@ -156,7 +156,7 @@ class RestaurantCard extends StatelessWidget {
             description:
                 'يقدم هذا النوع من الاشتراك 8 وجبات مميزة مليئة بالبروتين منهم 4 مع نشويات و 4 مع كربوهيدرات',
           ),
-          Subscription(
+          SubscriptionModel(
             title: 'وجبات برو',
             duration: '6 أشهر',
             price: 350,
@@ -164,7 +164,7 @@ class RestaurantCard extends StatelessWidget {
             description:
                 'باقة مخصصة للرياضيين المحترفين تحتوي على 16 وجبة غنية بالألياف والمعادن الضرورية لبناء العضلات',
           ),
-          Subscription(
+          SubscriptionModel(
             title: 'وجبات عادية',
             duration: '3 أشهر',
             price: 200,
@@ -172,7 +172,7 @@ class RestaurantCard extends StatelessWidget {
             description:
                 'يقدم هذا النوع من الاشتراك 8 وجبات مميزة مليئة بالبروتين منهم 4 مع نشويات و 4 مع كربوهيدرات',
           ),
-          Subscription(
+          SubscriptionModel(
             title: 'وجبات برو',
             duration: '6 أشهر',
             price: 350,
@@ -183,28 +183,28 @@ class RestaurantCard extends StatelessWidget {
         ],
 
         reviewsList: [
-          Review(
+          ReviewModel(
             userName: 'محمد احمد',
             rating: 4.8,
             comment: 'رائع جدا والطعم ممتاز',
             userImage: 'assets/images/user.jpg',
             date: '2026-03-01',
           ),
-          Review(
+          ReviewModel(
             userName: 'سارة خالد',
             rating: 5.0,
             comment: 'أفضل مطعم جربته',
             userImage: 'assets/images/user.jpg',
             date: '2026-03-01',
           ),
-          Review(
+          ReviewModel(
             userName: 'محمد احمد',
             rating: 4.8,
             comment: 'رائع جدا والطعم ممتاز',
             userImage: 'assets/images/user.jpg',
             date: '2026-03-01',
           ),
-          Review(
+          ReviewModel(
             userName: 'سارة خالد',
             rating: 5.0,
             comment: 'أفضل مطعم جربته',
@@ -214,7 +214,7 @@ class RestaurantCard extends StatelessWidget {
         ],
       ),
 
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم كنتاكي',
         image: 'assets/images/auth_background.png',
         rating: 4.7,
@@ -224,12 +224,12 @@ class RestaurantCard extends StatelessWidget {
         preparingTime: 20,
 
         meals: [
-          Meal(
+          MealModel(
             name: 'زنجر',
             price: 18,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'كرسبي',
             price: 22,
             image: 'assets/images/auth_background.png',
@@ -237,7 +237,7 @@ class RestaurantCard extends StatelessWidget {
         ],
 
         subscriptions: [
-          Subscription(
+          SubscriptionModel(
             title: 'باقة أسبوعية',
             duration: '1 شهر',
             price: 120,
@@ -246,7 +246,7 @@ class RestaurantCard extends StatelessWidget {
         ],
 
         reviewsList: [
-          Review(
+          ReviewModel(
             userName: 'أحمد علي',
             rating: 4.5,
             comment: 'طعم لذيذ لكن التوصيل بطيء قليلاً',
@@ -256,7 +256,7 @@ class RestaurantCard extends StatelessWidget {
         ],
       ),
 
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم الشيف',
         image: 'assets/images/auth_background.png',
         rating: 4.6,
@@ -266,12 +266,12 @@ class RestaurantCard extends StatelessWidget {
         preparingTime: 30,
 
         meals: [
-          Meal(
+          MealModel(
             name: 'ستيك',
             price: 40,
             image: 'assets/images/auth_background.png',
           ),
-          Meal(
+          MealModel(
             name: 'باستا',
             price: 25,
             image: 'assets/images/auth_background.png',
@@ -282,7 +282,7 @@ class RestaurantCard extends StatelessWidget {
         reviewsList: [],
       ),
 
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم الدجاج',
         image: 'assets/images/auth_background.png',
         rating: 4.9,
@@ -295,7 +295,7 @@ class RestaurantCard extends StatelessWidget {
         reviewsList: [],
       ),
 
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم كنتاكي',
         image: 'assets/images/auth_background.png',
         rating: 4.8,
@@ -308,7 +308,7 @@ class RestaurantCard extends StatelessWidget {
         reviewsList: [],
       ),
 
-      Restaurant(
+      RestaurantModel(
         name: 'مطعم الدجاج',
         image: 'assets/images/auth_background.png',
         rating: 4.9,

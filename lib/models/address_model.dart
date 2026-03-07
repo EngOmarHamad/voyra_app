@@ -1,10 +1,10 @@
-class Address {
+class AddressModel {
   final String id;
   final String title;
   final String details;
   final String type; // 'home', 'work', 'other'
 
-  Address({
+  AddressModel({
     required this.id,
     required this.title,
     required this.details,

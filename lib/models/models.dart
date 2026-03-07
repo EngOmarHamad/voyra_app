@@ -1,4 +1,10 @@
-export 'meal.dart';
-export 'restaurant.dart';
-export 'review.dart';
-export 'subscription.dart';
+export 'address_model.dart';
+export 'bank_model.dart';
+export 'meal_model.dart';
+export 'order_item_model.dart';
+export 'order_model.dart';
+export 'restaurant_model.dart';
+export 'review_model.dart';
+export 'subscription_model.dart';
+export 'user_model.dart';
+export 'workout_model.dart';

@@ -34,7 +34,7 @@ class BasketScreen extends StatelessWidget {
               children: [
                 ...cart.items.map((item) {
                   return BasketItemCard(
-                    meal: Meal(
+                    meal: MealModel(
                       name: item.name,
                       price: item.price,
                       image: item.image ?? '',

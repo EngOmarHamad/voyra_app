@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import '../../core/common_dependencies.dart';
 import '../../screens/restaurants/meal_detail_screen.dart';
 import '../../providers/cart_provider.dart';
-import '../../models/order_item.dart';
+import '../../models/order_item_model.dart';
 
 class MealCard extends StatelessWidget {
-  final Meal meal;
+  final MealModel meal;
   final double imageHeight;
 
   const MealCard({super.key, required this.meal, required this.imageHeight});
@@ -114,7 +114,7 @@ class MealCard extends StatelessWidget {
                   final cart = context.read<CartProvider>();
 
                   cart.addToCart(
-                    OrderItem(
+                    OrderItemModel(
                       id: meal.name,
                       name: meal.name,
                       price: meal.price,

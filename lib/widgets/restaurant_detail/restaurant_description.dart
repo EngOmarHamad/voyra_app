@@ -3,7 +3,7 @@ import 'restaurant_section_header.dart';
 import 'restaurant_info_badge.dart';
 
 class RestaurantDescription extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const RestaurantDescription({super.key, required this.restaurant});
 

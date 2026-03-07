@@ -1,7 +1,7 @@
 import '../../core/common_dependencies.dart';
 
 class SubscriptionCard extends StatelessWidget {
-  final Subscription subscription;
+  final SubscriptionModel subscription;
 
   const SubscriptionCard({super.key, required this.subscription});
 

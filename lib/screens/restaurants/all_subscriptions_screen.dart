@@ -2,7 +2,7 @@ import '../../core/common_dependencies.dart';
 import '../../widgets/restaurant_detail/subscription_card.dart';
 
 class AllSubscriptionsScreen extends StatelessWidget {
-  final List<Subscription> subscriptions;
+  final List<SubscriptionModel> subscriptions;
   final String restaurantName;
 
   const AllSubscriptionsScreen({

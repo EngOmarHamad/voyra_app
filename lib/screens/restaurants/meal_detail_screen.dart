@@ -2,10 +2,8 @@ import 'package:provider/provider.dart';
 import 'package:voyra_app/core/common_dependencies.dart';
 import 'package:voyra_app/providers/cart_provider.dart';
 
-import '../../models/order_item.dart';
-
 class MealDetailScreen extends StatefulWidget {
-  final Meal meal;
+  final MealModel meal;
 
   const MealDetailScreen({super.key, required this.meal});
 
@@ -191,7 +189,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                                   final cart = context.read<CartProvider>();
 
                                   cart.addToCart(
-                                    OrderItem(
+                                    OrderItemModel(
                                       id: widget.meal.name,
                                       name: widget.meal.name,
                                       price: widget.meal.price,

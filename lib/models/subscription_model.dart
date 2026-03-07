@@ -1,11 +1,11 @@
-class Subscription {
+class SubscriptionModel {
   final String title;
   final String duration;
   final double price;
   final int mealsCount;
   final String description;
 
-  Subscription({
+  SubscriptionModel({
     required this.title,
     required this.duration,
     required this.price,
@@ -13,8 +13,8 @@ class Subscription {
     this.description = '',
   });
 
-  factory Subscription.fromJson(Map<String, dynamic> json) {
-    return Subscription(
+  factory SubscriptionModel.fromJson(Map<String, dynamic> json) {
+    return SubscriptionModel(
       title: json['title'],
       duration: json['duration'],
       price: json['price'].toDouble(),

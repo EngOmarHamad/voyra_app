@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'order_item.dart';
+import 'order_item_model.dart';
 
 /// ─── حالات الطلب ─────────────────────────────────────────────────────────
 enum OrderStatus {
@@ -54,7 +54,7 @@ class OrderModel {
   final String restaurantImageUrl;
 
   /// عناصر الطلب
-  final List<OrderItem> items;
+  final List<OrderItemModel> items;
 
   /// الدفع
   final PaymentMethod paymentMethod;
@@ -128,7 +128,9 @@ class OrderModel {
       status: OrderStatus.fromString(map["status"]),
       restaurantName: map["restaurantName"],
       restaurantImageUrl: map["restaurantImageUrl"],
-      items: (map["items"] as List).map((e) => OrderItem.fromMap(e)).toList(),
+      items: (map["items"] as List)
+          .map((e) => OrderItemModel.fromMap(e))
+          .toList(),
       paymentMethod: PaymentMethod.fromString(map["paymentMethod"]),
       deliveryFee: (map["deliveryFee"] ?? 0).toDouble(),
       tax: (map["tax"] ?? 0).toDouble(),

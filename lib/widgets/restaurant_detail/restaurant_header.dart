@@ -2,7 +2,7 @@ import '../../core/common_dependencies.dart';
 import 'restaurant_info_tile.dart';
 
 class RestaurantHeader extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const RestaurantHeader({super.key, required this.restaurant});
 

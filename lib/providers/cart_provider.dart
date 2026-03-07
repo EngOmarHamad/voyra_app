@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/order_item.dart';
+import '../models/order_item_model.dart';
 import '../models/order_model.dart';
 import '../services/firestore_service.dart';
 
@@ -8,9 +8,9 @@ class CartProvider extends ChangeNotifier {
   final FirestoreService _firestoreService = FirestoreService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  final List<OrderItem> _items = [];
+  final List<OrderItemModel> _items = [];
 
-  List<OrderItem> get items => _items;
+  List<OrderItemModel> get items => _items;
   int get itemCount => _items.length;
 
   bool _isLoading = false;
@@ -29,7 +29,7 @@ class CartProvider extends ChangeNotifier {
   double get total => subtotal + deliveryFee + tax + adminFee;
 
   /// إضافة للسلة
-  Future<void> addToCart(OrderItem item) async {
+  Future<void> addToCart(OrderItemModel item) async {
     final existingIndex = _items.indexWhere((element) => element.id == item.id);
     debugPrint(
       "Adding to cart: ${item.name}, quantity: ${item.quantity}, price: ${item.price}",

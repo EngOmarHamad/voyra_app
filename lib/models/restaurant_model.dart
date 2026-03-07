@@ -1,22 +1,22 @@
-import 'package:voyra_app/models/meal.dart';
-import 'package:voyra_app/models/review.dart';
-import 'package:voyra_app/models/subscription.dart';
+import 'package:voyra_app/models/meal_model.dart';
+import 'package:voyra_app/models/review_model.dart';
+import 'package:voyra_app/models/subscription_model.dart';
 
-class Restaurant {
+class RestaurantModel {
   final String name;
   final String image;
   final double rating;
   final int reviews;
   final String dishes;
 
-  final int ordersCount;        // عدد الطلبات السابقة
-  final int preparingTime;      // وقت التحضير بالدقائق
+  final int ordersCount; // عدد الطلبات السابقة
+  final int preparingTime; // وقت التحضير بالدقائق
 
-  final List<Meal> meals;              // قائمة الوجبات
-  final List<Subscription> subscriptions;  // الاشتراكات
-  final List<Review> reviewsList;      // التقييمات
+  final List<MealModel> meals; // قائمة الوجبات
+  final List<SubscriptionModel> subscriptions; // الاشتراكات
+  final List<ReviewModel> reviewsList; // التقييمات
 
-  Restaurant({
+  RestaurantModel({
     required this.name,
     required this.image,
     required this.rating,
@@ -29,8 +29,8 @@ class Restaurant {
     required this.reviewsList,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) {
-    return Restaurant(
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) {
+    return RestaurantModel(
       name: json['name'],
       image: json['image'],
       rating: json['rating'].toDouble(),
@@ -39,16 +39,14 @@ class Restaurant {
       ordersCount: json['ordersCount'],
       preparingTime: json['preparingTime'],
 
-      meals: (json['meals'] as List)
-          .map((e) => Meal.fromJson(e))
-          .toList(),
+      meals: (json['meals'] as List).map((e) => MealModel.fromJson(e)).toList(),
 
       subscriptions: (json['subscriptions'] as List)
-          .map((e) => Subscription.fromJson(e))
+          .map((e) => SubscriptionModel.fromJson(e))
           .toList(),
 
       reviewsList: (json['reviewsList'] as List)
-          .map((e) => Review.fromJson(e))
+          .map((e) => ReviewModel.fromJson(e))
           .toList(),
     );
   }

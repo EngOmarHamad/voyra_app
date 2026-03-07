@@ -1,8 +1,8 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order_item.dart';
+import '../../models/order_item_model.dart';
 
 class MealsTable extends StatelessWidget {
-  final List<OrderItem> items;
+  final List<OrderItemModel> items;
   const MealsTable({super.key, required this.items});
 
   @override

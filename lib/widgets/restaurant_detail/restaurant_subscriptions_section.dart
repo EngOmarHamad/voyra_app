@@ -5,7 +5,7 @@ import 'restaurant_empty_state.dart';
 import 'subscription_card.dart';
 
 class RestaurantSubscriptionsSection extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const RestaurantSubscriptionsSection({super.key, required this.restaurant});
 

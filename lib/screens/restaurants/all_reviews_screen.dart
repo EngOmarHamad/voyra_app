@@ -4,7 +4,7 @@ import '../../widgets/restaurant_detail/restaurant_star_rating.dart';
 import '../../widgets/restaurant_detail/review_card.dart';
 
 class AllReviewsScreen extends StatelessWidget {
-  final List<Review> reviews;
+  final List<ReviewModel> reviews;
   final String restaurantName;
 
   const AllReviewsScreen({

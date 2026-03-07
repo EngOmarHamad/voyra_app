@@ -2,7 +2,7 @@ import '../../core/common_dependencies.dart';
 import '../../widgets/restaurant_detail/meal_card.dart';
 
 class AllMealsScreen extends StatelessWidget {
-  final List<Meal> meals;
+  final List<MealModel> meals;
   final String restaurantName;
 
   const AllMealsScreen({

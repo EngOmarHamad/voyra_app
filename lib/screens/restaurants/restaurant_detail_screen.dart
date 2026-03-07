@@ -3,7 +3,7 @@ import '../../widgets/restaurant_detail/restaurant_detail_widgets.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   const RestaurantDetailScreen({super.key, required this.restaurant});
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
   @override
   State<RestaurantDetailScreen> createState() => _RestaurantDetailScreenState();
 }

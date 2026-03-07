@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_theme.dart';
-import '../../models/address.dart';
+import '../../models/address_model.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/custom_text.dart';
@@ -19,14 +19,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String selectedPaymentMethod = 'card';
   String? selectedAddressId;
 
-  final List<Address> addresses = [
-    Address(
+  final List<AddressModel> addresses = [
+    AddressModel(
       id: '1',
       title: 'المنزل',
       details: 'الرياض، حي اليرموك، شارع النجاح',
       type: 'home',
     ),
-    Address(
+    AddressModel(
       id: '2',
       title: 'العمل',
       details: 'الرياض، برج الفيصلية، الدور 15',
@@ -330,7 +330,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   if (titleController.text.isNotEmpty &&
                       detailsController.text.isNotEmpty) {
                     setState(() {
-                      final newAddress = Address(
+                      final newAddress = AddressModel(
                         id: DateTime.now().millisecondsSinceEpoch.toString(),
                         title: titleController.text,
                         details: detailsController.text,

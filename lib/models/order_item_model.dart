@@ -1,5 +1,5 @@
 /// عنصر واحد داخل الطلب (Meal Item)
-class OrderItem {
+class OrderItemModel {
   final String id;
   final String name;
   final int quantity;
@@ -7,7 +7,7 @@ class OrderItem {
   final String? image;
   final String? mealId;
 
-  const OrderItem({
+  const OrderItemModel({
     required this.id,
     required this.name,
     required this.quantity,
@@ -38,8 +38,8 @@ class OrderItem {
     };
   }
 
-  factory OrderItem.fromMap(Map<String, dynamic> map) {
-    return OrderItem(
+  factory OrderItemModel.fromMap(Map<String, dynamic> map) {
+    return OrderItemModel(
       id: map["id"] ?? "",
       name: map["name"] ?? "",
       quantity: map["quantity"] ?? 1,
@@ -50,8 +50,8 @@ class OrderItem {
   }
 
   /// تعديل الكمية بسهولة
-  OrderItem copyWith({int? quantity}) {
-    return OrderItem(
+  OrderItemModel copyWith({int? quantity}) {
+    return OrderItemModel(
       id: id,
       name: name,
       quantity: quantity ?? this.quantity,

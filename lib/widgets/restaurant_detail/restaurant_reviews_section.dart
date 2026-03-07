@@ -7,7 +7,7 @@ import 'restaurant_star_rating.dart';
 import 'review_card.dart';
 
 class RestaurantReviewsSection extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const RestaurantReviewsSection({super.key, required this.restaurant});
 

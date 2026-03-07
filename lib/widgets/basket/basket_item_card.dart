@@ -3,10 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../custom_text.dart';
 import '../custom_text_field.dart';
 import '../../core/app_theme.dart';
-import '../../models/meal.dart';
+import '../../models/meal_model.dart';
 
 class BasketItemCard extends StatelessWidget {
-  final Meal meal;
+  final MealModel meal;
   final int quantity;
   final String note;
   final VoidCallback onAdd;

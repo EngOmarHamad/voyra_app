@@ -1,7 +1,7 @@
 import '../../core/common_dependencies.dart';
 
 class ReviewCard extends StatelessWidget {
-  final Review review;
+  final ReviewModel review;
 
   const ReviewCard({super.key, required this.review});
 
