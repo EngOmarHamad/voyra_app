@@ -1,5 +1,5 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order.dart'; // تعريف Order
+import '../../models/order_model.dart'; // تعريف Order
 
 // ──────────────────────────
 // 1️⃣ Section Header
@@ -45,7 +45,7 @@ class DetailRow extends StatelessWidget {
 // 3️⃣ Payment Details Column
 // ──────────────────────────
 class PaymentDetails extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
 
   const PaymentDetails({super.key, required this.order});
 

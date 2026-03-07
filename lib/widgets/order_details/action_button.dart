@@ -1,9 +1,9 @@
 import 'package:voyra_app/core/common_dependencies.dart';
 
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 
 class ActionButton extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
   final VoidCallback onCancel;
   final VoidCallback onPreparingCancel;
   final VoidCallback onTrack;

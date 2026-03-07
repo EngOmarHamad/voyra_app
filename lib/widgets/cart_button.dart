@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import '../core/app_theme.dart';
+import '../providers/cart_provider.dart';
 import '../screens/cart/basket_screen.dart';
 
 class CartButton extends StatelessWidget {
-  final int count;
   final Color? iconColor;
 
-  const CartButton({super.key, this.count = 4, this.iconColor});
+  const CartButton({super.key, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final count = cartProvider.itemCount;
     return Stack(
       alignment: Alignment.center,
       children: [

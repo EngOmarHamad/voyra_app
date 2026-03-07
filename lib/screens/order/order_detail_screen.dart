@@ -9,7 +9,7 @@ import 'package:voyra_app/core/snackbar_helper.dart';
 
 import '../../core/common_dependencies.dart';
 import '../../core/invoice_generator.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 import '../../widgets/order_details/action_button.dart';
 import '../../widgets/order_details/cancel_dialog.dart';
 import '../../widgets/order_details/cancellation_section.dart';
@@ -23,7 +23,7 @@ import '../../widgets/order_details/section_header.dart';
 import '../../widgets/order_details/tracking_sheet.dart';
 
 class OrderDetailScreen extends StatefulWidget {
-  final Order order;
+  final OrderModel order;
 
   const OrderDetailScreen({super.key, required this.order});
 

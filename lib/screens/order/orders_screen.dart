@@ -1,5 +1,5 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 import '../../models/order_item.dart';
 import 'order_detail_screen.dart';
 
@@ -12,82 +12,91 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   // بيانات وهمية — ستُستبدل بـ API لاحقاً
-  final List<Order> orders = [
-    Order(
+  final List<OrderModel> orders = [
+    OrderModel(
       id: '1',
+      userId: '',
       orderNumber: '#1256564',
-      date: DateTime(2025, 3, 22, 14, 0),
+      createdAt: DateTime(2025, 3, 22, 14, 0),
       status: OrderStatus.newOrder,
       restaurantName: 'مطعم دجاج تكا',
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(name: 'برجر دجاج', quantity: 2, price: 200),
-        OrderItem(name: 'دجاج برياني', quantity: 1, price: 200),
-        OrderItem(name: 'دجاج مشوي', quantity: 1, price: 200),
+        OrderItem(id: '1', name: 'برجر دجاج', quantity: 2, price: 200),
+        OrderItem(id: '2', name: 'دجاج برياني', quantity: 1, price: 200),
+        OrderItem(id: '3', name: 'دجاج مشوي', quantity: 1, price: 200),
       ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,
       tax: 200,
       adminFee: 500,
     ),
-    Order(
+    OrderModel(
       id: '2',
+      userId: '',
       orderNumber: '#1256565',
-      date: DateTime(2025, 3, 21, 12, 30),
+      createdAt: DateTime(2025, 3, 21, 12, 30),
       status: OrderStatus.preparing,
       restaurantName: 'مطعم دجاج تكا',
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
-      items: const [OrderItem(name: 'دجاج مشوي', quantity: 2, price: 150)],
+      items: const [
+        OrderItem(id: '4', name: 'دجاج مشوي', quantity: 2, price: 150),
+      ],
       paymentMethod: PaymentMethod.creditCard,
       deliveryFee: 150,
       tax: 100,
       adminFee: 200,
     ),
-    Order(
+    OrderModel(
       id: '3',
+      userId: '',
       orderNumber: '#1256566',
-      date: DateTime(2025, 3, 20, 19, 0),
+      createdAt: DateTime(2025, 3, 20, 19, 0),
       status: OrderStatus.onTheWay,
       restaurantName: 'مطعم دجاج تكا',
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(name: 'برجر دجاج', quantity: 1, price: 200),
-        OrderItem(name: 'دجاج برياني', quantity: 2, price: 200),
+        OrderItem(id: '5', name: 'برجر دجاج', quantity: 1, price: 200),
+        OrderItem(id: '6', name: 'دجاج برياني', quantity: 2, price: 200),
       ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,
       tax: 150,
       adminFee: 300,
     ),
-    Order(
+    OrderModel(
       id: '4',
+      userId: '',
       orderNumber: '#1256567',
-      date: DateTime(2025, 3, 18, 13, 0),
+      createdAt: DateTime(2025, 3, 18, 13, 0),
       status: OrderStatus.delivered,
       restaurantName: 'مطعم دجاج تكا',
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
       items: const [
-        OrderItem(name: 'دجاج مشوي', quantity: 3, price: 150),
-        OrderItem(name: 'دجاج برياني', quantity: 1, price: 200),
+        OrderItem(id: '7', name: 'دجاج مشوي', quantity: 3, price: 150),
+        OrderItem(id: '8', name: 'دجاج برياني', quantity: 1, price: 200),
       ],
       paymentMethod: PaymentMethod.cash,
       deliveryFee: 100,
       tax: 120,
       adminFee: 200,
     ),
-    Order(
+    OrderModel(
       id: '5',
+      userId: '',
       orderNumber: '#1256568',
-      date: DateTime(2025, 3, 15, 10, 0),
+      createdAt: DateTime(2025, 3, 15, 10, 0),
       status: OrderStatus.cancelled,
       restaurantName: 'مطعم دجاج تكا',
       restaurantImageUrl:
           'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=100&auto=format&fit=crop',
-      items: const [OrderItem(name: 'برجر دجاج', quantity: 1, price: 200)],
+      items: const [
+        OrderItem(id: '9', name: 'برجر دجاج', quantity: 1, price: 200),
+      ],
       paymentMethod: PaymentMethod.wallet,
       deliveryFee: 200,
       tax: 100,
@@ -96,7 +105,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
       cancelDate: DateTime(2025, 10, 12),
     ),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +136,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 
-  Widget _buildOrderCard(Order order) {
+  Widget _buildOrderCard(OrderModel order) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -238,7 +246,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   const SizedBox(height: 30),
                   Text(
-                    '${order.date.day}/${order.date.month}/${order.date.year}',
+                    '${order.createdAt.day}/${order.createdAt.month}/${order.createdAt.year}',
                     style: TextStyle(
                       fontSize: 11,
                       color: Colors.grey[400],

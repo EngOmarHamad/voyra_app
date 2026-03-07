@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 import '../custom_text.dart';
 
 class OrderInfoCard extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
   const OrderInfoCard({super.key, required this.order});
 
   @override
@@ -64,7 +64,7 @@ class OrderInfoCard extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               CustomText(
-                '${order.date.day}/${order.date.month}/${order.date.year}  ${order.date.hour}:${order.date.minute.toString().padLeft(2, '0')}',
+                '${order.createdAt.day}/${order.createdAt.month}/${order.createdAt.year}  ${order.createdAt.hour}:${order.createdAt.minute.toString().padLeft(2, '0')}',
                 fontSize: 12,
                 color: Colors.grey[600],
               ),

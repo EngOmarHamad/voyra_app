@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:voyra_app/screens/auth/sign_in_screen.dart';
+import 'providers/cart_provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/restaurants/restaurants_screen.dart';
 import 'screens/splash_screen.dart';
@@ -12,11 +13,21 @@ import 'screens/cart/checkout_screen.dart';
 import 'screens/order/orders_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+import 'package:voyra_app/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const VoyraApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const VoyraApp(),
+    ),
+  );
 }
 
 class VoyraApp extends StatelessWidget {
@@ -37,7 +48,7 @@ class VoyraApp extends StatelessWidget {
       locale: const Locale('ar', 'SA'),
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: const SignInScreen(),
+        child: const SplashScreen(),
       ),
       routes: {
         '/sign_in': (context) => const SignInScreen(),

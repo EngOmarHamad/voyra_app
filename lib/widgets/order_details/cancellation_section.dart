@@ -1,9 +1,9 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 import 'section_header.dart';
 
 class CancellationSection extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
 
   const CancellationSection({super.key, required this.order});
 

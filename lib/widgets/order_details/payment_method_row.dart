@@ -1,5 +1,5 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 
 class PaymentMethodRow extends StatelessWidget {
   final PaymentMethod paymentMethod;

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voyra_app/core/app_theme.dart';
-import 'package:voyra_app/screens/auth/sign_in_screen.dart';
-import 'package:voyra_app/screens/restaurants/restaurants_screen.dart';
-import 'home_screen.dart';
+import 'auth/auth_gate.dart';
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +17,7 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => AuthGate()),
       );
     });
   }

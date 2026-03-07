@@ -2,11 +2,11 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import '../models/order.dart';
+import '../models/order_model.dart';
 
 /// مولّد فاتورة PDF من بيانات الطلب
 class InvoiceGenerator {
-  static Future<Uint8List> generate(Order order) async {
+  static Future<Uint8List> generate(OrderModel order) async {
     final pdf = pw.Document();
     final arabicFont = pw.Font.ttf(
       await rootBundle.load("assets/fonts/Tajawal-Regular.ttf"),
@@ -58,7 +58,7 @@ class InvoiceGenerator {
   }
 
   // ── Header ──────────────────────────────────────────────────────────────────
-  static pw.Widget _buildHeader(Order order) {
+  static pw.Widget _buildHeader(OrderModel order) {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
@@ -99,8 +99,8 @@ class InvoiceGenerator {
   }
 
   // ── بيانات الطلب ────────────────────────────────────────────────────────────
-  static pw.Widget _buildOrderInfo(Order order) {
-    final d = order.date;
+  static pw.Widget _buildOrderInfo(OrderModel order) {
+    final d = order.createdAt;
     final dateStr =
         '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}  '
         '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
@@ -141,7 +141,7 @@ class InvoiceGenerator {
   }
 
   // ── جدول الوجبات ────────────────────────────────────────────────────────────
-  static pw.Widget _buildMealsTable(Order order) {
+  static pw.Widget _buildMealsTable(OrderModel order) {
     const headerStyle = pw.TextStyle(color: PdfColors.white);
 
     return pw.TableHelper.fromTextArray(
@@ -176,7 +176,7 @@ class InvoiceGenerator {
   }
 
   // ── ملخص الدفع ──────────────────────────────────────────────────────────────
-  static pw.Widget _buildPaymentSummary(Order order) {
+  static pw.Widget _buildPaymentSummary(OrderModel order) {
     return pw.Align(
       alignment: pw.Alignment.centerLeft,
       child: pw.Container(

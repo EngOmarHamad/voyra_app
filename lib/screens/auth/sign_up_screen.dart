@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:voyra_app/widgets/auth_layout.dart';
@@ -10,6 +8,8 @@ import '../static/terms_screen.dart';
 import 'sign_in_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -49,67 +49,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     if (_formKey.currentState!.validate()) {
-      try {
-        // 🔹 إنشاء المستخدم
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      final String? errorMessage = await authProvider.signUp(
+        name: _nameController.text,
+        phone: _phoneController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (!mounted) return;
+
+      if (errorMessage == null) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'تم إنشاء الحساب بنجاح',
+          text: 'أهلاً بك في فويرا',
+          confirmBtnColor: AppColors.primary,
+          onConfirmBtnTap: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInScreen()),
+              (route) => false,
             );
-
-        // 🔹 تخزين بيانات إضافية في Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredential.user!.uid)
-            .set({
-              'name': _nameController.text.trim(),
-              'phone': _phoneController.text.trim(),
-              'email': _emailController.text.trim(),
-              'createdAt': Timestamp.now(),
-            });
-        if (mounted) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'تم إنشاء الحساب بنجاح',
-            text: 'أهلاً بك في فويرا',
-            confirmBtnColor: AppColors.primary,
-            onConfirmBtnTap: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const SignInScreen()),
-                (route) => false,
-              );
-            },
-          );
-        }
-      } on FirebaseAuthException catch (e) {
-        String message = "حدث خطأ";
-
-        if (e.code == 'email-already-in-use') {
-          message = 'البريد مستخدم مسبقاً';
-        } else if (e.code == 'weak-password') {
-          message = 'كلمة المرور ضعيفة جداً';
-        } else if (e.code == 'invalid-email') {
-          message = 'البريد غير صالح';
-        }
-        if (mounted) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: message,
-            confirmBtnColor: AppColors.primary,
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: 'حدث خطأ غير متوقع',
-            confirmBtnColor: AppColors.primary,
-          );
-        }
+          },
+        );
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: errorMessage,
+          confirmBtnColor: AppColors.primary,
+        );
       }
     }
   }
@@ -118,7 +90,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return AuthLayout(
       child: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
         child: Column(
           children: [
@@ -312,7 +283,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            CustomButton(text: "إنشاء حساب", onPressed: _handleSignUp),
+            Consumer<AuthProvider>(
+              builder: (context, authProvider, child) {
+                return CustomButton(
+                  text: authProvider.isLoading
+                      ? "جاري إنشاء الحساب..."
+                      : "إنشاء حساب",
+                  onPressed: authProvider.isLoading ? () {} : _handleSignUp,
+                  backgroundColor: authProvider.isLoading
+                      ? Colors.grey
+                      : AppColors.primary,
+                );
+              },
+            ),
           ],
         ),
       ),

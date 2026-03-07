@@ -1,8 +1,8 @@
 import '../../core/common_dependencies.dart';
-import '../../models/order.dart';
+import '../../models/order_model.dart';
 
 class RestaurantCard extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
   final VoidCallback? onDetailsPressed;
 
   const RestaurantCard({super.key, required this.order, this.onDetailsPressed});

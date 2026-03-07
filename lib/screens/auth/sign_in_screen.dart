@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:voyra_app/core/app_theme.dart';
+import 'package:voyra_app/providers/auth_provider.dart';
 import 'package:voyra_app/screens/auth/forgot_password_screen.dart';
 import 'package:voyra_app/screens/auth/sign_up_screen.dart';
 import 'package:voyra_app/widgets/auth_layout.dart';
@@ -19,53 +20,48 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool _rememberMe = false;
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   void _handleSignIn() async {
     if (_formKey.currentState!.validate()) {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _phoneController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-        if (mounted) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            text: 'تم تسجيل الدخول بنجاح',
-            confirmBtnColor: AppColors.primary,
-            onConfirmBtnTap: () {
-              // روح على الصفحة الرئيسية
-              Navigator.pushReplacementNamed(context, '/home');
-            },
-          );
-        }
-      } on FirebaseAuthException catch (e) {
-        String message = "حدث خطأ";
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-        if (e.code == 'user-not-found') {
-          message = 'المستخدم غير موجود';
-        } else if (e.code == 'wrong-password') {
-          message = 'كلمة المرور غير صحيحة';
-        } else if (e.code == 'invalid-email') {
-          message = 'البريد غير صالح';
-        }
-        if (mounted) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: message,
-            confirmBtnColor: AppColors.primary,
-          );
-        }
+      final String? errorMessage = await authProvider.signIn(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      if (errorMessage == null) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          text: 'تم تسجيل الدخول بنجاح',
+          confirmBtnColor: AppColors.primary,
+          confirmBtnText: "حسنا",
+          onConfirmBtnTap: () {
+            // روح على الصفحة الرئيسية
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+        );
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: errorMessage,
+
+          confirmBtnColor: AppColors.primary,
+          confirmBtnText: "حسنا",
+        );
       }
     }
   }
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -74,50 +70,36 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return AuthLayout(
       child: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
         child: Column(
           children: [
             _buildTabs(context),
             const SizedBox(height: 30),
             CustomTextField(
-              controller: _phoneController,
-              label: 'رقم الجوال',
-              hint: '5xxxxxxxx',
-              keyboardType: TextInputType.phone,
-              suffixIcon: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/palestine_flag.svg",
-                      width: 24,
-                      height: 24,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Text(
-                          '🇵🇸',
-                          style: TextStyle(fontSize: 22),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              controller: _emailController,
+              label: 'البريد الالكتروني',
+              hint: 'example@gmail.com',
+              keyboardType: TextInputType.emailAddress,
               prefixIcon: const UnconstrainedBox(
                 child: FaIcon(
-                  FontAwesomeIcons.mobileScreenButton,
+                  FontAwesomeIcons.envelope,
                   size: 18,
                   color: AppColors.textSecondary,
                 ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال رقم الجوال';
+                  return 'يرجى إدخال البريد الالكتروني';
                 }
-                if (value.length < 9) {
-                  return 'رقم الجوال غير صحيح';
+
+                String pattern =
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                RegExp regex = RegExp(pattern);
+
+                if (!regex.hasMatch(value)) {
+                  return 'صيغة البريد الالكتروني غير صحيحة';
                 }
+
                 return null;
               },
             ),
@@ -157,7 +139,19 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(height: 10),
             _buildRememberForgot(),
             const SizedBox(height: 25),
-            CustomButton(text: "تسجيل الدخول", onPressed: _handleSignIn),
+            Consumer<AuthProvider>(
+              builder: (context, authProvider, child) {
+                return CustomButton(
+                  text: authProvider.isLoading
+                      ? "جاري تسجيل الدخول..."
+                      : "تسجيل الدخول",
+                  onPressed: authProvider.isLoading ? () {} : _handleSignIn,
+                  backgroundColor: authProvider.isLoading
+                      ? Colors.grey
+                      : AppColors.primary,
+                );
+              },
+            ),
             const SizedBox(height: 15),
             TextButton(
               onPressed: () => Navigator.push(
