@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:voyra_app/screens/auth/sign_in_screen.dart';
 import 'providers/cart_provider.dart';
+import 'providers/workout_provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/restaurants/restaurants_screen.dart';
 import 'screens/splash_screen.dart';
 import 'core/app_theme.dart';
-import 'screens/restaurants/restaurant_detail_screen.dart';
-import 'screens/restaurants/meal_detail_screen.dart';
 import 'screens/cart/basket_screen.dart';
 import 'screens/cart/checkout_screen.dart';
 import 'screens/order/orders_screen.dart';
@@ -24,6 +23,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => WorkoutProvider()),
       ],
       child: const VoyraApp(),
     ),

@@ -13,7 +13,7 @@ class RestaurantHeader extends StatelessWidget {
         /// 🔹 الشريط العلوي (تصميم أنيق ومنظم)
         Container(
           color: AppColors.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: SafeArea(
             bottom: false,
             child: Row(
@@ -35,7 +35,6 @@ class RestaurantHeader extends StatelessWidget {
           ),
         ),
 
-        /// 🔹 حاوية المعلومات بتصميم الـ Premium Profile
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -56,7 +55,6 @@ class RestaurantHeader extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
 
-              /// صورة المطعم مع إطار وتأثير عمق (3D Effect)
               Container(
                 width: 140,
                 height: 140,

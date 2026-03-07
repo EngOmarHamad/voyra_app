@@ -1,4 +1,5 @@
 import '../core/common_dependencies.dart';
+import '../widgets/workout/add_workout_sheet.dart';
 import 'restaurants/restaurants_screen.dart';
 import 'settings_screen.dart';
 import 'workouts_screen.dart';
@@ -22,6 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
     const SettingsPage(),
     const RestaurantsScreen(),
   ];
+  void _showAddWorkoutSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor:
+          Colors.transparent, // لجعل الحواف الدائرية تظهر بشكل صحيح
+      builder: (context) => const AddWorkoutSheet(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +41,32 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.background,
       body: _screens[_selectedIndex],
       appBar: _buildAppBar(),
+      floatingActionButton: _selectedIndex == 1
+          ? SizedBox(
+              height: 40, // 👈 هنا نتحكم في تقليل الارتفاع
+              child: FloatingActionButton.extended(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.surface,
+                elevation: 2,
+                onPressed: () {
+                  _showAddWorkoutSheet(context);
+                },
+                // 👈 جعل التدويرة أكبر (دائرية بالكامل)
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
+                label: Text(
+                  "إضافة تمرين",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    fontFamily: GoogleFonts.cairo().fontFamily,
+                  ),
+                ),
+              ),
+            )
+          : null,
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _selectedIndex,
         onTap: (value) {

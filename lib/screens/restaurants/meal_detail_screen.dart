@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:voyra_app/widgets/cart_button.dart';
-import 'package:voyra_app/widgets/custom_back_button.dart';
-import '../../core/app_theme.dart';
-import '../../models/meal.dart';
+import 'package:provider/provider.dart';
+import 'package:voyra_app/core/common_dependencies.dart';
+import 'package:voyra_app/providers/cart_provider.dart';
+
+import '../../models/order_item.dart';
 
 class MealDetailScreen extends StatefulWidget {
   final Meal meal;
@@ -62,7 +60,13 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                               horizontal: 16,
                               vertical: 10,
                             ),
-                            color: Colors.black.withValues(alpha: 0.6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.6),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                            ),
                             child: const Row(
                               children: [
                                 FaIcon(
@@ -115,11 +119,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
 
                           // Notes Section
                           Container(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.grey.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,29 +136,11 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: TextField(
-                                    maxLines: 4,
-                                    decoration: InputDecoration(
-                                      hintText: "أكتب ملاحظتك هنا",
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: 14,
-                                        fontFamily:
-                                            GoogleFonts.cairo().fontFamily,
-                                      ),
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                    ),
-                                  ),
+
+                                CustomTextField(
+                                  height: null,
+                                  maxLines: 4,
+                                  hint: "أكتب ملاحظتك هنا",
                                 ),
                               ],
                             ),
@@ -163,75 +148,86 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Bottom Action Bar
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -5),
-                  ),
-                ],
-              ),
-              child: SafeArea(
-                child: Row(
-                  children: [
-                    // Quantity Selector
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () => setState(() => quantity++),
-                          ),
-                          Text(
-                            "$quantity",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          children: [
+                            // Quantity Selector
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.add),
+                                    onPressed: () => setState(() => quantity++),
+                                  ),
+                                  Text(
+                                    "$quantity",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.remove),
+                                    onPressed: () {
+                                      if (quantity > 1) {
+                                        setState(() => quantity--);
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              if (quantity > 1) setState(() => quantity--);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    // Add to Cart Button
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          minimumSize: const Size(double.infinity, 55),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Text(
-                          "أضف للسلة",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.cairo().fontFamily,
-                          ),
+                            const SizedBox(width: 16),
+                            // Add to Cart Button
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  final cart = context.read<CartProvider>();
+
+                                  cart.addToCart(
+                                    OrderItem(
+                                      id: widget.meal.name,
+                                      name: widget.meal.name,
+                                      price: widget.meal.price,
+                                      quantity: quantity,
+                                      image: widget.meal.image,
+                                    ),
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "${widget.meal.name} تمت إضافته للسلة",
+                                      ),
+                                      duration: const Duration(seconds: 1),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  minimumSize: const Size(double.infinity, 55),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                child: Text(
+                                  "أضف للسلة",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: GoogleFonts.cairo().fontFamily,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

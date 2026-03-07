@@ -428,10 +428,12 @@ class RestaurantCard extends StatelessWidget {
                       width: double.infinity,
                       height: 32,
                       child: OutlinedButton(
-                        onPressed: () => Navigator.pushNamed(
+                        onPressed: () => Navigator.push(
                           context,
-                          '/restaurant_detail',
-                          arguments: restaurant,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                RestaurantDetailScreen(restaurant: restaurant),
+                          ),
                         ),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.zero,
