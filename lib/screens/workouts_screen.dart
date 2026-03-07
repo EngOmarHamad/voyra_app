@@ -146,7 +146,7 @@ class WorkoutsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
 
-            // الأزرار داخل الـ Row
+              // الأزرار داخل الـ Row
               Row(
                 children: [
                   // زر الإلغاء
@@ -220,6 +220,7 @@ class WorkoutsScreen extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(10),
@@ -253,7 +254,25 @@ class WorkoutsScreen extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.arrow_back_ios_new, size: 14, color: Colors.grey),
+          Shimmer.fromColors(
+            baseColor: AppColors.primary, // اللون الأساسي
+            highlightColor: Colors.grey[300]!, // لون اللمعة
+            period: const Duration(seconds: 2), // سرعة اللمعة
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 10,
+                  color: Colors.grey,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  "اسحب للحذف",
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
