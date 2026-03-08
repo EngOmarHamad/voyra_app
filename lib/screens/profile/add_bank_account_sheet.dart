@@ -14,6 +14,8 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
   final _ibanController = TextEditingController();
   final _accountNumberController = TextEditingController();
 
+  bool _isSaving = false; // حالة التحميل
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -23,9 +25,49 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
     super.dispose();
   }
 
-  void _handleSave() {
+  @override
+  void initState() {
+    super.initState();
+    final bank = context.read<UserProvider>().currentUser?.bankDetails;
+    if (bank != null) {
+      _nameController.text = bank.accountHolder;
+      _bankNameController.text = bank.bankName;
+      _ibanController.text = bank.iban;
+      _accountNumberController.text = bank.accountNumber;
+    }
+  }
+
+  // الدالة المعدلة للربط مع الفايربيز
+  void _handleSave() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pop(context);
+      setState(() => _isSaving = true);
+
+      // تجميع البيانات في Map
+      BankModel bankData = BankModel(
+        accountHolder: _nameController.text.trim(),
+        bankName: _bankNameController.text.trim(),
+        iban: _ibanController.text.trim(),
+        accountNumber: _accountNumberController.text.trim(),
+      );
+      // استدعاء الدالة الموجودة في الـ UserProvider
+      bool success = await context.read<UserProvider>().updateBankDetails(
+        bankData,
+      );
+
+      if (mounted) {
+        setState(() => _isSaving = false);
+        if (success) {
+          // إغلاق المودال والرجوع مع رسالة نجاح
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("تم حفظ الحساب البنكي بنجاح")),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("حدث خطأ أثناء الحفظ، حاول ثانية")),
+          );
+        }
+      }
     }
   }
 
@@ -36,7 +78,6 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
         left: 24,
         right: 24,
         top: 24,
-        // لضمان عدم تداخل لوحة المفاتيح مع الحقول
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
       decoration: const BoxDecoration(
@@ -49,7 +90,6 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          // أضفنا سكرول للحماية في الشاشات الصغيرة
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,51 +113,46 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
               ),
               const SizedBox(height: 24),
 
-              // إسم صاحب الحساب
               CustomTextField(
                 controller: _nameController,
                 label: 'إسم صاحب الحساب',
-                borderRadius: 30, // لجعل الحقل بيضاوي
-                height: null, // للسماح بظهور رسالة الخطأ
+                borderRadius: 30,
                 prefixIcon: _buildPrefixIcon(FontAwesomeIcons.user),
                 validator: (v) => v?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
               ),
               const SizedBox(height: 16),
 
-              // اسم البنك
               CustomTextField(
                 controller: _bankNameController,
                 label: 'اسم البنك',
                 borderRadius: 30,
-                height: null,
                 prefixIcon: _buildPrefixIcon(FontAwesomeIcons.buildingColumns),
                 validator: (v) => v?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
               ),
               const SizedBox(height: 16),
 
-              // رقم الايبان
               CustomTextField(
                 controller: _ibanController,
                 label: 'رقم الايبان',
                 borderRadius: 30,
-                height: null,
                 prefixIcon: _buildPrefixIcon(FontAwesomeIcons.idCard),
                 validator: (v) => v?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
               ),
               const SizedBox(height: 16),
 
-              // رقم الحساب
               CustomTextField(
                 controller: _accountNumberController,
                 label: 'رقم الحساب',
                 borderRadius: 30,
-                height: null,
                 prefixIcon: _buildPrefixIcon(FontAwesomeIcons.hashtag),
                 validator: (v) => v?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
               ),
 
               const SizedBox(height: 32),
-              CustomButton(text: 'حفظ', onPressed: _handleSave),
+
+              _isSaving
+                  ? const Center(child: CircularProgressIndicator())
+                  : CustomButton(text: 'حفظ التعديلات', onPressed: _handleSave),
               const SizedBox(height: 16),
             ],
           ),
@@ -126,7 +161,6 @@ class _AddBankAccountModalState extends State<AddBankAccountModal> {
     );
   }
 
-  // ميثود مساعدة لبناء الأيقونة بشكل موحد
   Widget _buildPrefixIcon(IconData icon) {
     return UnconstrainedBox(
       child: FaIcon(icon, size: 16, color: AppColors.textSecondary),

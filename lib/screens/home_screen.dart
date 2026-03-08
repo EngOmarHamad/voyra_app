@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _buildAppBar(),
       floatingActionButton: _selectedIndex == 1
           ? SizedBox(
-              height: 40, // 👈 هنا نتحكم في تقليل الارتفاع
+              height: 40,
               child: FloatingActionButton.extended(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.surface,
@@ -51,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   _showAddWorkoutSheet(context);
                 },
-                // 👈 جعل التدويرة أكبر (دائرية بالكامل)
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

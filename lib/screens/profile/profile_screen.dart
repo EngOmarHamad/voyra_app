@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:voyra_app/screens/profile/edit_profile_screen.dart';
 import 'package:voyra_app/widgets/profile/profile_header_card.dart';
 
@@ -15,6 +16,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // استخدام listen: false ضروري داخل initState
+      context.read<UserProvider>().fetchUserData();
+    });
+  }
+
   void _showAddBankSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -45,6 +55,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // نستخدم read هنا بدلاً من watch لأننا سنستخدم Selector في الأجزاء المتغيرة
+    final userProvider = context.read<UserProvider>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       appBar: AppBar(
@@ -73,110 +86,141 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            // Avatar Section with Red Background
-            ProfileHeaderCard(
+            const ProfileHeaderCard(
               imageUrl:
-                  'https://www.google.com/imgres?q=profile%20picture&imgurl=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1654110455429-cf322b40a906%3Ffm%3Djpg%26q%3D60%26w%3D3000%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.1.0%26ixid%3DM3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%253D&imgrefurl=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fprofile-picture&docid=gMlIcsQMiG-F2M&tbnid=L_Y9hpEKpUYnPM&vet=12ahUKEwjH_MbZuIaTAxULZaQEHUVJDx4QnPAOegQIGxAB..i&w=3000&h=3000&hcb=2&ved=2ahUKEwjH_MbZuIaTAxULZaQEHUVJDx4QnPAOegQIGxAB',
+                  'https://media.istockphoto.com/id/1262964459/photo/nothing-is-a-magnet-for-success-like-self-confidence.jpg?s=612x612&w=0&k=20&c=1iMsY14y_8JtWA2Oeo0TCQQYe3Jio78O1Q2MxKWZQnI=',
             ),
             const SizedBox(height: 20),
 
-            // Personal Data Section
-            _SectionHeader(
-              title: 'بيانات الملف الشخصي',
-              action: FaIcon(
-                FontAwesomeIcons.penToSquare,
-                color: AppColors.primary,
-                size: 20,
-              ),
-              onAction: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditProfileScreen(),
-                  ),
+            // 1. قسم البيانات الشخصية (يحدث فقط عند تغيير الاسم أو الايميل)
+            Selector<UserProvider, String>(
+              selector: (_, prov) =>
+                  "${prov.currentUser?.name}${prov.currentUser?.email}",
+              builder: (context, combinedData, _) {
+                final user = userProvider.currentUser;
+                return Column(
+                  children: [
+                    _SectionHeader(
+                      title: 'بيانات الملف الشخصي',
+                      action: FaIcon(
+                        FontAwesomeIcons.penToSquare,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                      onAction: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditProfileScreen(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _InfoCard(
+                      backgroundColor: AppColors.surface,
+                      children: [
+                        _InfoRow(
+                          label: 'الأسم',
+                          value: user?.name ?? 'غير محدد',
+                        ),
+                        _InfoRow(
+                          label: 'البريد الإلكتروني',
+                          value: user?.email ?? 'غير محدد',
+                        ),
+                      ],
+                    ),
+                  ],
                 );
               },
             ),
+
             const SizedBox(height: 12),
 
-            Column(
-              children: [
-                // Group 1: Name and Email
-                _InfoCard(
-                  backgroundColor: AppColors.surface,
-                  children: [
-                    _InfoRow(label: 'الأسم', value: 'عبدالله الأمير'),
-                    _InfoRow(
-                      label: 'البريد الإلكتروني',
-                      value: 'Example@email.com',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-
-                // Group 2: Phone Number
-                _InfoCard(
+            // 2. قسم الهاتف (يحدث فقط عند تغيير الهاتف)
+            Selector<UserProvider, String?>(
+              selector: (_, prov) => prov.currentUser?.phone,
+              builder: (context, phone, _) {
+                return _InfoCard(
                   backgroundColor: Colors.transparent,
                   children: [
                     _InfoRow(
                       label: 'رقم الجوال',
-                      value: '+966 50 000 0000',
+                      value: phone ?? 'غير محدد',
                       hasEditIcon: true,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditPhoneScreen(),
-                          ),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditPhoneScreen(),
+                        ),
+                      ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 12),
+                );
+              },
+            ),
 
-                // Group 3: Password
-                _InfoCard(
-                  backgroundColor: Colors.transparent,
-
-                  children: [
-                    _InfoRow(
-                      label: 'كلمة المرور',
-                      value: '********',
-                      hasEditIcon: true,
-                      obscured: true,
-                      onTap: () => _showChangePasswordSheet(context),
-                    ),
-                  ],
+            const SizedBox(height: 12),
+            // كلمة المرور لا تتغير هنا، تبقى ثابتة
+            _InfoCard(
+              backgroundColor: Colors.transparent,
+              children: [
+                _InfoRow(
+                  label: 'كلمة المرور',
+                  value: '********',
+                  hasEditIcon: true,
+                  obscured: true,
+                  onTap: () => _showChangePasswordSheet(context),
                 ),
               ],
             ),
 
             const SizedBox(height: 30),
 
-            // Bank Data Section
-            _SectionHeader(
-              title: 'البيانات البنكية',
-              action: Text(
-                'أضافة',
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-              onAction: () => _showAddBankSheet(context),
+            // 3. 🔥 قسم البيانات البنكية (هذا ما سيحدث وحده عند إضافة حساب)
+            Selector<UserProvider, dynamic>(
+              selector: (_, prov) => prov.currentUser?.bankDetails,
+              builder: (context, bankDetails, _) {
+                return Column(
+                  children: [
+                    _SectionHeader(
+                      title: 'البيانات البنكية',
+                      action: Text(
+                        bankDetails == null ? 'إضافة' : 'تعديل',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      onAction: () => _showAddBankSheet(context),
+                    ),
+                    const SizedBox(height: 12),
+                    if (bankDetails != null)
+                      BankDetailsCard(
+                        accountHolder: bankDetails.accountHolder,
+                        bankName: bankDetails.bankName,
+                        iban: bankDetails.iban,
+                        accountNumber: bankDetails.accountNumber,
+                        onEditTap: () => _showAddBankSheet(context),
+                      )
+                    else
+                      _InfoCard(
+                        backgroundColor: Colors.white,
+                        children: [
+                          const Center(
+                            child: Text(
+                              "لا يوجد حساب بنكي مضاف حالياً",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                );
+              },
             ),
-            const SizedBox(height: 12),
-
-            BankDetailsCard(
-              accountHolder: 'عبدالله الأمير',
-              bankName: 'البنك الراجحي السعودي',
-              iban: 'SA000000000000000000',
-              accountNumber: '000000000000',
-              onEditTap: () => _showAddBankSheet(context),
-            ),
-
             const SizedBox(height: 32),
           ],
         ),

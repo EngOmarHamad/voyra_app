@@ -10,7 +10,7 @@ class ChangePasswordModal extends StatefulWidget {
 class _ChangePasswordModalState extends State<ChangePasswordModal> {
   // مفتاح النموذج للتحقق من الصحة
   final _formKey = GlobalKey<FormState>();
-
+  bool _isLoading = false;
   // وحدات التحكم للنصوص
   final _oldPassController = TextEditingController();
   final _newPassController = TextEditingController();
@@ -134,13 +134,52 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
 
             CustomButton(
               text: 'تأكيد',
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // إذا كان الفاليديشن صحيح
-                  print("كلمة المرور صحيحة، يتم الحفظ...");
-                  Navigator.pop(context);
-                }
-              },
+              isLoading: _isLoading, // مرر حالة التحميل للزر
+              onPressed: _isLoading
+                  ? null
+                  : () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() => _isLoading = true);
+
+                        // نقوم بتخزين المراجع التي نحتاجها قبل الـ await لضمان عدم حدوث مشاكل
+                        final navigator = Navigator.of(context);
+
+                        final error = await context
+                            .read<UserProvider>()
+                            .changePassword(
+                              _oldPassController.text.trim(),
+                              _newPassController.text.trim(),
+                            );
+
+                        // التحقق من mounted باستخدام الـ context نفسه
+                        if (!context.mounted) return;
+
+                        setState(() => _isLoading = false);
+
+                        if (error == null) {
+                          // نجاح العملية - نستخدم الـ navigator المخزن أو context مباشرة بعد التأكد من mounted
+                          navigator.pop();
+
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.success,
+                            title: "نجاح",
+                            text: "تم تغيير كلمة المرور بنجاح",
+                            confirmBtnColor: AppColors.primary,
+                          );
+                        } else {
+                          // فشل العملية - نستخدم الـ scaffoldMessenger المخزن مسبقاً
+
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.error,
+                            title: "خطأ",
+                            text: error,
+                            confirmBtnColor: AppColors.primary,
+                          );
+                        }
+                      }
+                    },
             ),
             const SizedBox(height: 16),
           ],

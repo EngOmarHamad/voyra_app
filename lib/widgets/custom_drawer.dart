@@ -1,17 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:voyra_app/core/app_theme.dart';
 import 'package:voyra_app/screens/profile/profile_screen.dart';
 import 'package:voyra_app/screens/static/about_us_screen.dart';
 import 'package:voyra_app/screens/static/contact_us_screen.dart';
 import 'package:voyra_app/screens/static/privacy_screen.dart';
 import 'package:voyra_app/screens/static/terms_screen.dart';
 
+import '../core/common_dependencies.dart';
+import '../providers/user_provider.dart';
+
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Drawer(
       backgroundColor: AppColors.primary,
       child: Container(
@@ -25,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              _buildHeader(context),
+              _buildHeader(context, userProvider),
 
               const Divider(color: Colors.white24, indent: 20, endIndent: 20),
 
@@ -120,45 +122,19 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  // ودجت الهيدر
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, UserProvider provider) {
+    final user = provider.currentUser;
+    final isLoading = provider.isLoading; // نستخدم حالة التحميل من البروفايدر
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/user.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "أحمد علي",
-                    style: TextStyle(
-                      color: AppColors.surface,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "examb88@gmail.com",
-                    style: TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
-              ),
-            ],
+          Expanded(
+            child: isLoading
+                ? _buildShimmerHeader() // إذا كان يحمل، اعرض الوميض
+                : _buildActualHeader(user), // إذا انتهى، اعرض البيانات
           ),
           IconButton(
             icon: const FaIcon(
@@ -166,10 +142,70 @@ class CustomDrawer extends StatelessWidget {
               color: AppColors.surface,
               size: 20,
             ),
-            onPressed: () => Navigator.pop(context), // لإغلاق الـ Drawer
+            onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
+    );
+  }
+
+  // ودجت الوميض (Shimmer)
+  Widget _buildShimmerHeader() {
+    return Shimmer.fromColors(
+      baseColor: Colors.white24,
+      highlightColor: Colors.white10,
+      child: Row(
+        children: [
+          const CircleAvatar(radius: 28, backgroundColor: Colors.white),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(width: 100, height: 12, color: Colors.white),
+              const SizedBox(height: 8),
+              Container(width: 140, height: 10, color: Colors.white),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ودجت البيانات الحقيقية
+  Widget _buildActualHeader(dynamic user) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 28,
+          backgroundColor: Colors.white24,
+          backgroundImage: const AssetImage("assets/images/user.jpg"),
+        ),
+        const SizedBox(width: 12),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user?.name ?? "مستخدم فويرة",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: AppColors.surface,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                user?.email ?? "جارٍ التحميل...",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white70, fontSize: 11),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

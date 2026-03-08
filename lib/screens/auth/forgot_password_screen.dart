@@ -27,7 +27,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     if (_formKey.currentState!.validate()) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const VerificationCodeScreen()),
+        MaterialPageRoute(
+          builder: (context) =>
+              const VerificationCodeScreen(verificationId: ''),
+        ),
       );
     }
   }

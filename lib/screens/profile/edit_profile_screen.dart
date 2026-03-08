@@ -1,5 +1,6 @@
 import '../../core/common_dependencies.dart';
 import '../../widgets/profile/profile_header_card.dart';
+import '../../providers/user_provider.dart'; // تأكد من استيراد البروفايدر
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -9,8 +10,60 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final _nameController = TextEditingController(text: 'عبدالله الأمير');
-  final _emailController = TextEditingController(text: 'Example@email.com');
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // جلب البيانات الحالية من البروفايدر ووضعها في الحقول
+    final user = context.read<UserProvider>().currentUser;
+    _nameController = TextEditingController(text: user?.name ?? "");
+    _emailController = TextEditingController(text: user?.email ?? "");
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  // دالة الحفظ
+  void _handleSave() async {
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+
+    if (name.isEmpty || email.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("يرجى ملء جميع الحقول")));
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    // استدعاء الدالة التي أنشأناها سابقاً في UserProvider
+    bool success = await context.read<UserProvider>().updateProfile(
+      name,
+      email,
+    );
+
+    if (mounted) {
+      setState(() => _isSaving = false);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("تم تحديث البيانات بنجاح")),
+        );
+        Navigator.pop(context); // العودة للخلف بعد النجاح
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("حدث خطأ أثناء الحفظ")));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +96,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            // الهيدر مع تفعيل أيقونة الكاميرا
+            // الهيدر مع الرابط الثابت (بما أن موضوع الصورة ملغي)
             ProfileHeaderCard(
-              imageUrl: 'https://i.pravatar.cc/300',
-              isEdit: true,
-              onCameraTap: () {
-              },
+              imageUrl:
+                  'https://media.istockphoto.com/id/1262964459/photo/nothing-is-a-magnet-for-success-like-self-confidence.jpg?s=612x612&w=0&k=20&c=1iMsY14y_8JtWA2Oeo0TCQQYe3Jio78O1Q2MxKWZQnI=',
+              isEdit:
+                  true, // نجعلها false لتعطيل أيقونة الكاميرا بما أنها ملغية
             ),
             const SizedBox(height: 20),
 
-            // حقل الاسم
             _buildLabel("الأسم بالكامل"),
             const SizedBox(height: 8),
             _buildTextField(controller: _nameController, hintText: "أدخل اسمك"),
 
             const SizedBox(height: 20),
 
-            // حقل البريد
             _buildLabel("البريد الإلكتروني"),
             const SizedBox(height: 8),
             _buildTextField(
@@ -70,14 +121,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
             const SizedBox(height: 40),
 
-            // زر الحفظ
-            CustomButton(
-              text: 'حفظ التعديلات',
-              onPressed: () {
-                // منطق الحفظ هنا
-                Navigator.pop(context);
-              },
-            ),
+            // زر الحفظ مع حالة التحميل
+            _isSaving
+                ? const Center(child: CircularProgressIndicator())
+                : CustomButton(text: 'حفظ التعديلات', onPressed: _handleSave),
             const SizedBox(height: 20),
           ],
         ),
@@ -85,7 +132,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  // ويدجت مساعدة لبناء العناوين الصغيرة فوق الحقول
   Widget _buildLabel(String text) {
     return Text(
       text,
@@ -97,7 +143,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  // ويدجت مساعدة لبناء حقول الإدخال بنفس ستايل التصميم
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,

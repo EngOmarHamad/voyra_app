@@ -84,6 +84,7 @@ class AuthProvider extends ChangeNotifier {
         phone: phone.trim(),
         email: email.trim(),
         createdAt: Timestamp.now(),
+        bankDetails: null,
       );
 
       await _firestoreService.createUser(user);
