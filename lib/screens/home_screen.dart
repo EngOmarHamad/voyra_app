@@ -1,4 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../core/common_dependencies.dart';
+import '../providers/notification_provider.dart';
 import '../widgets/workout/add_workout_sheet.dart';
 import 'restaurants/restaurants_screen.dart';
 import 'settings_screen.dart';
@@ -31,6 +34,36 @@ class _HomeScreenState extends State<HomeScreen> {
           Colors.transparent, // لجعل الحواف الدائرية تظهر بشكل صحيح
       builder: (context) => const AddWorkoutSheet(),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // تشغيل العمليات بعد بناء الواجهة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final notifyProv = context.read<NotificationProvider>();
+
+      // 1. جلب التوكن وحفظه
+      notifyProv.initPushNotifications();
+
+      // 2. جلب سجل الإشعارات القديمة
+      notifyProv.fetchNotifications();
+
+      // 3. إعداد الاستماع للإشعارات الحية (Foreground)
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        if (message.notification != null) {
+          if (!mounted) return;
+          // إظهار تنبيه بسيط للمستخدم وهو داخل التطبيق
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message.notification!.title ?? "إشعار جديد"),
+              backgroundColor: AppColors.primary,
+            ),
+          );
+        }
+      });
+    });
   }
 
   @override

@@ -8,3 +8,4 @@ export 'review_model.dart';
 export 'subscription_model.dart';
 export 'user_model.dart';
 export 'workout_model.dart';
+export 'notification_model.dart';

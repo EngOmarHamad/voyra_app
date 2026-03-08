@@ -1,7 +1,7 @@
 // import 'dart:typed_data';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:printing/printing.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -9,7 +9,7 @@ import 'package:voyra_app/core/snackbar_helper.dart';
 
 import '../../core/common_dependencies.dart';
 import '../../core/invoice_generator.dart';
-import '../../models/order_model.dart';
+
 import '../../widgets/order_details/action_button.dart';
 import '../../widgets/order_details/cancel_dialog.dart';
 import '../../widgets/order_details/cancellation_section.dart';
@@ -50,7 +50,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         html.Url.revokeObjectUrl(url);
         SnackBarHelper.show(context, "✅ تم تحميل الصورة");
       } else {
-        await ImageGallerySaver.saveImage(image);
+        await ImageGallerySaverPlus.saveImage(image);
         SnackBarHelper.show(context, "✅ تم حفظ الصورة في المعرض");
       }
     } catch (e) {

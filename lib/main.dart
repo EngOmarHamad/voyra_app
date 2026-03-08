@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:voyra_app/screens/auth/sign_in_screen.dart';
 import 'core/app_theme.dart';
 import 'providers/cart_provider.dart';
+import 'providers/notification_provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/workout_provider.dart';
 import 'providers/auth_provider.dart';
@@ -17,6 +19,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
+import 'services/local_notification_service.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,7 +35,9 @@ void main() async {
   await FirebaseAuth.instance.setSettings(
     appVerificationDisabledForTesting: true,
   );
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // تهيئة الإشعارات المحلية
+  LocalNotificationService.initialize();
   runApp(
     MultiProvider(
       providers: [
@@ -33,6 +45,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => WorkoutProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: const VoyraApp(),
     ),
